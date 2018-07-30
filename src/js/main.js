@@ -1,5 +1,5 @@
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
     game.load.image('bullet', 'assets/img/bullet.png');
@@ -8,6 +8,8 @@ function preload() {
     game.load.image('ship', 'assets/img/Jet-top.svg');
     game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
     game.load.image('starfield', 'assets/img/starfield.png');
+    this.game.load.audio('sfx:shot', 'assets/audio/shot.wav');
+    this.game.load.audio('sfx:impact', 'assets/audio/impact.wav');
 }
 
 var player;
@@ -26,13 +28,19 @@ var enemyBullet;
 var firingTimer = 0;
 var stateText;
 var livingEnemies = [];
+var sfx;
 
 function create() {
+
+    sfx = {
+        shot: this.game.add.audio('sfx:shot'),
+        impact: this.game.add.audio('sfx:impact')
+    };
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  The scrolling starfield background
-    starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+    starfield = game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
 
     //  Our bullet group
     bullets = game.add.group();
@@ -55,8 +63,8 @@ function create() {
     enemyBullets.setAll('checkWorldBounds', true);
 
     //  The hero!
-    player = game.add.sprite(400, 500, 'ship');
-    player.scale.setTo(0.25, 0.25);
+    player = game.add.sprite(640, 900, 'ship');
+    player.scale.setTo(0.45, 0.45);
     player.anchor.setTo(0.5, 0.5);
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
@@ -96,7 +104,7 @@ function create() {
 
     //  And some controls to play the game with
     cursors = game.input.keyboard.createCursorKeys();
-    fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    fireButton = game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
     
 }
 
@@ -106,8 +114,8 @@ function createAliens () {
     {
         for (var x = 0; x < 10; x++)
         {
-            var alien = aliens.create(x * 48, y * 50, 'invader');
-            alien.scale.setTo(0.25, 0.25);
+            var alien = aliens.create(x * 68, y * 70, 'invader');
+            alien.scale.setTo(0.35, 0.35);
             alien.anchor.setTo(0.5, 0.5);
             //alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
             //alien.play('fly');
@@ -119,10 +127,10 @@ function createAliens () {
     aliens.y = 50;
 
     //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    var tween = game.add.tween(aliens).to( { x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    var tween = game.add.tween(aliens).to( { x: 550 }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //  When the tween loops it calls descend
-    tween.onLoop.add(descend, this);
+    tween.onRepeat.add(descend, this);
 }
 
 function setupInvader (invader) {
@@ -134,8 +142,7 @@ function setupInvader (invader) {
 }
 
 function descend() {
-
-    aliens.y += 10;
+    aliens.y += 30;
 
 }
 
@@ -196,6 +203,7 @@ function collisionHandler (bullet, alien) {
     scoreText.text = scoreString + score;
 
     //  And create an explosion :)
+    sfx.impact.play();
     var explosion = explosions.getFirstExists(false);
     explosion.reset(alien.body.x, alien.body.y);
     explosion.play('kaboom', 30, false, true);
@@ -227,6 +235,7 @@ function enemyHitsPlayer (player,bullet) {
     }
 
     //  And create an explosion :)
+    sfx.impact.play();
     var explosion = explosions.getFirstExists(false);
     explosion.reset(player.body.x, player.body.y);
     explosion.play('kaboom', 30, false, true);
@@ -287,6 +296,7 @@ function fireBullet () {
         if (bullet)
         {
             //  And fire it
+            sfx.shot.play();
             bullet.reset(player.x, player.y + 8);
             bullet.body.velocity.y = -400;
             bulletTime = game.time.now + 200;
