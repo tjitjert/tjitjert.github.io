@@ -79,6 +79,10 @@ function enemyFires (context) {
 
         let randomPlayer = Math.floor(Math.random() * 2)+1;
 
+        if(context.levelConfig.players === 1){
+            randomPlayer = 1;
+        }
+
         if(randomPlayer === 1){
             context.game.physics.arcade.moveToObject(enemyBullet,context.player,120);
         } else {
@@ -122,7 +126,9 @@ function collisionHandler (bullet, alien) {
     if (this.aliens.countLiving() == 0)
     {
         this.player.bullets.callAll('kill');
-        this.playerTwo.bullets.callAll('kill');
+        if(this.levelConfig.players === 2){
+            this.playerTwo.bullets.callAll('kill');
+        }
         this.enemyBullets.callAll('kill');
         //score += 1000;
         //scoreText.text = scoreString + score;
@@ -172,10 +178,19 @@ function enemyHitsPlayer (player,bullet) {
         }
     }
 
-    if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
-        let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
-        gstateText.anchor.setTo(0.5, 0.5);
+    if(this.levelConfig.players === 2){
+        if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
+            let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
+            gstateText.anchor.setTo(0.5, 0.5);
+        }
+    } else {
+        if(this.player.lives.countLiving() <1 ){
+            let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
+            gstateText.anchor.setTo(0.5, 0.5);
+        }
     }
+
+
 
 }
 
@@ -208,8 +223,10 @@ export default class MainLevel {
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
         this.game.load.image('starfield', 'assets/img/starfield.png');
     }
-    init() {
+    init(config) {
         this.game.renderer.renderSession.roundPixels = true;
+        this.levelConfig = config;
+        console.log(this.levelConfig)
     }
     create() {
     
@@ -236,24 +253,24 @@ export default class MainLevel {
             })
         });
         this.game.add.existing(this.player);
+        if(this.levelConfig.players === 2) {
+            this.playerTwo =  new Hero(this.game, {
+                ship: 'ship2',
+                player: 'two',
+                positionHUD: 'right',
+                spawnPosition: {
+                    x: 1040,
+                    y: 900
+                },
+                keys: this.game.input.keyboard.addKeys({
+                    left: Phaser.KeyCode.A,
+                    right: Phaser.KeyCode.D,
+                    fire: Phaser.KeyCode.F
+                })
+            });
+            this.game.add.existing(this.playerTwo);
+        }
 
-        this.playerTwo =  new Hero(this.game, {
-            ship: 'ship2',
-            player: 'two',
-            positionHUD: 'right',
-            spawnPosition: {
-                x: 1040,
-                y: 900
-            },
-            keys: this.game.input.keyboard.addKeys({
-                left: Phaser.KeyCode.A,
-                right: Phaser.KeyCode.D,
-                fire: Phaser.KeyCode.F
-            })
-        });
-        this.game.add.existing(this.playerTwo);
-
-    
         //  The baddies!
         this.aliens = this.game.add.group();
         this.aliens.enableBody = true;
@@ -289,9 +306,7 @@ export default class MainLevel {
         }
 
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
-        this.game.physics.arcade.overlap(this.playerTwo.bullets, this.aliens, collisionHandler, null, this);
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
-        this.game.physics.arcade.overlap(this.enemyBullets, this.playerTwo, enemyHitsPlayer, null, this);
 
         if(this.player.reviveAble && this.player.revivePenalty < this.game.time.now){
             this.player.revive();
@@ -300,13 +315,17 @@ export default class MainLevel {
             this.player.hasShield = true;
             this.player.shieldTimer = this.game.time.now + 2000;
         }
-        if(this.playerTwo.reviveAble && this.playerTwo.revivePenalty < this.game.time.now){
-            this.playerTwo.revive();
-            this.playerTwo.tint = 500 * 0xffffff;
-            this.playerTwo.reviveAble = false;
-            this.playerTwo.hasShield = true;
-            this.playerTwo.shieldTimer = this.game.time.now + 2000;
-        }
 
+        if(this.levelConfig.players === 2) {
+            this.game.physics.arcade.overlap(this.enemyBullets, this.playerTwo, enemyHitsPlayer, null, this);
+            this.game.physics.arcade.overlap(this.playerTwo.bullets, this.aliens, collisionHandler, null, this);
+            if(this.playerTwo.reviveAble && this.playerTwo.revivePenalty < this.game.time.now){
+                this.playerTwo.revive();
+                this.playerTwo.tint = 500 * 0xffffff;
+                this.playerTwo.reviveAble = false;
+                this.playerTwo.hasShield = true;
+                this.playerTwo.shieldTimer = this.game.time.now + 2000;
+            }
+        }
     }
 }

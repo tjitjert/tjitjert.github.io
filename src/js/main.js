@@ -1,7 +1,8 @@
 import MainLevel from './levels/mainLevel';
-var game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
+import GameMenu from 'capmaningamemenu';
+let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
 
-var preloader = {
+let preloader = {
     preload: function(){
         game.load.image('ship1', 'assets/img/Jet-top.svg');
         game.load.image('ship2', 'assets/img/Jet2-top.svg');
@@ -13,16 +14,46 @@ var preloader = {
         game._sfx = {
             shot: this.game.add.audio('sfx:shot'),
             impact: this.game.add.audio('sfx:impact'),
-            boden: this.game.add.audio('sfx:boden'),
-            //boden: new Phaser.Sound(game,'sfx:boden',1,true)
+            boden: this.game.add.audio('sfx:boden')
         };
-        game.state.start('main1', true, false, {level: 0});
+        game.state.start('mainMenu', true, false);
     }
 }
 
+const mainMenu = new GameMenu(
+    {
+        title: 'capman Crashing bugs',
+        background: 'assets/img/Intro_Screen_background.png',
+        logo: 'assets/img/CapmanLogo1.svg',
+        buttons: [
+            {
+                id: 'onePlayer',
+                text: '- start one player -'
+            },
+            {
+                id: 'twoPlayers',
+                text: '- start two player -'
+            },
+            {
+                id: 'highScores',
+                text: '- High scores -'
+            }
+        ]
+    },
+    (button) =>{
+        console.log(button);
+        let players = 1;
+        if(button.id === 'twoPlayers') {
+            players = 2;
+        }
+        game.state.start('main1', true, false, {players: players}); 
+    }
+);
 
-var main1 = new MainLevel();
+
+
+let main1 = new MainLevel();
 game.state.add('main1', main1);
-//game.state.add('mainLevel',  { preload: preload, create: create, update: update, render: render });
+game.state.add('mainMenu', mainMenu);
 game.state.add('preloader', preloader)
-game.state.start('preloader', true, false, {level: 0});
+game.state.start('preloader', true, false);
