@@ -182,11 +182,38 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
+
+            if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                    if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                        this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                            this.game.state.start('showScore', true, false, this.score);
+                        });
+                    }
+                });
+            } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                    this.game.state.start('showScore', true, false, score);
+                });
+            }
+            else {
+                this.game.state.start('showScore', true, false, this.score); 
+            }
+
+
         }
     } else {
         if(this.player.lives.countLiving() <1 ){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
+
+            if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                    this.game.state.start('showScore', true, false, score);
+                });
+            } else {
+                this.game.state.start('showScore', true, false, this.score); 
+            }
         }
     }
 
@@ -223,10 +250,11 @@ export default class MainLevel {
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
         this.game.load.image('starfield', 'assets/img/starfield.png');
     }
-    init(config) {
+    init(config, score) {
         this.game.renderer.renderSession.roundPixels = true;
         this.levelConfig = config;
-        console.log(this.levelConfig)
+        this.score = score;
+        console.log(this.levelConfig, this.score);
     }
     create() {
     
