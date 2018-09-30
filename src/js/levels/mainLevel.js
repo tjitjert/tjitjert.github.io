@@ -189,11 +189,13 @@ function enemyHitsPlayer (player,bullet) {
                         this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                             this.game.state.start('showScore', true, false, this.score);
                         });
+                    } else {
+                        this.game.state.start('showScore', true, false, this.score);
                     }
                 });
             } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
                 this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
-                    this.game.state.start('showScore', true, false, score);
+                    this.game.state.start('showScore', true, false, this.score);
                 });
             }
             else {
@@ -209,7 +211,7 @@ function enemyHitsPlayer (player,bullet) {
 
             if(this.score.isScoreMoreThenLast(this.player.score)){
                 this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
-                    this.game.state.start('showScore', true, false, score);
+                    this.game.state.start('showScore', true, false, this.score);
                 });
             } else {
                 this.game.state.start('showScore', true, false, this.score); 

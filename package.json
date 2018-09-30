@@ -30,6 +30,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "capmanhighscore": "0.0.1",
     "capmaningamemenu": "0.0.1"
   }
 }
