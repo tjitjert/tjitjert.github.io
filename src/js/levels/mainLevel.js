@@ -1,56 +1,78 @@
 import Hero from '../characters/hero';
+import Boss from '../characters/boss';
 function createAliens (context, invaderType) {
 
-    let xMultiply = 68, yMultiply =70;
-    let scale = 0.35;
-    let tweenX = 550;
+    // let xMultiply = 68, yMultiply =70;
+    // let scale = 0.35;
+    // let tweenX = 550;
 
-    if(invaderType === 1){
-        xMultiply = 78; 
-        //yMultiply =90;
-        scale = 0.25;
-        tweenX = 500
-    }
+    // if(invaderType === 1){
+    //     xMultiply = 78; 
+    //     //yMultiply =90;
+    //     scale = 0.25;
+    //     tweenX = 500
+    // }
 
-    if(invaderType === 2){
-        xMultiply = 78; 
-        //yMultiply =90;
-        scale = 0.25;
-        tweenX = 500
+    // if(invaderType === 2){
+    //     xMultiply = 78; 
+    //     //yMultiply =90;
+    //     scale = 0.25;
+    //     tweenX = 500
 
-    }
+    // }
 
-    if(invaderType === 3){
-        xMultiply = 85; 
-        //yMultiply =90;
-        scale = 0.35;
-        tweenX = 500
+    // if(invaderType === 3){
+    //     xMultiply = 85; 
+    //     //yMultiply =90;
+    //     scale = 0.35;
+    //     tweenX = 500
 
-    }
+    // }
 
-    for (var y = 0; y < 4; y++)
-    {
-        for (var x = 0; x < 10; x++)
-        {
-            var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
-            alien.scale.setTo(scale, scale);
-            alien.anchor.setTo(0.5, 0.5);
-            //alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-            //alien.play('fly');
-            // if(tint){
-            //     alien.tint = tint
-            // }
+    // for (var y = 0; y < 4; y++)
+    // {
+    //     for (var x = 0; x < 10; x++)
+    //     {
+    //         var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
+    //         alien.scale.setTo(scale, scale);
+    //         alien.anchor.setTo(0.5, 0.5);
+    //         //alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+    //         //alien.play('fly');
+    //         // if(tint){
+    //         //     alien.tint = tint
+    //         // }
             
-            alien.body.moves = false;
-        }
+    //         alien.body.moves = false;
+    //     }
+    // }
+
+    // context.aliens.x = 100;
+    // context.aliens.y = 50;
+
+    // //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
+    // var tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    // tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
+}
+
+function bossColision (boss, bullet) {
+
+    bullet.kill();
+
+    this.game._sfx.impact.play();
+    let explosion = this.explosions.getFirstExists(false);
+
+    explosion.reset(bullet.body.x, bullet.body.y);
+    explosion.play('kaboom', 30, false, true);
+    boss.health --;
+
+    if(boss.health === 0){
+        let explosionOne = this.explosions.getFirstExists(false);
+        explosionOne.scale.setTo(2, 2);
+        explosionOne.reset(boss.body.center.x, boss.body.center.y);
+        explosionOne.play('kaboom', 30, false, true);
+        this.game.camera.shake(0.005, 500);
+        boss.kill();
     }
-
-    context.aliens.x = 100;
-    context.aliens.y = 50;
-
-    //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    var tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
 }
 
 function enemyFires (context) {
@@ -244,6 +266,7 @@ export default class MainLevel {
     }
     preload() {
         this.game.load.image('bullet', 'assets/img/bullet.png');
+        this.game.load.image('boss1', 'assets/img/boss1.svg');
         this.game.load.image('enemyBullet', 'assets/img/enemy-bullet.png');
         this.game.load.image('invader1', 'assets/img/bug1.svg');
         this.game.load.image('invader2', 'assets/img/bug2.svg');
@@ -293,13 +316,16 @@ export default class MainLevel {
                     y: 900
                 },
                 keys: this.game.input.keyboard.addKeys({
-                    left: Phaser.KeyCode.A,
-                    right: Phaser.KeyCode.D,
-                    fire: Phaser.KeyCode.F
+                    left: Phaser.KeyCode.D,
+                    right: Phaser.KeyCode.G,
+                    fire: Phaser.KeyCode.A
                 })
             });
             this.game.add.existing(this.playerTwo);
         }
+
+        this.boss = new Boss(this.game);
+        this.game.add.existing(this.boss);
 
         //  The baddies!
         this.aliens = this.game.add.group();
@@ -336,6 +362,9 @@ export default class MainLevel {
         }
 
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
+        this.game.physics.arcade.overlap(this.player.bullets, this.boss, bossColision, null, this);
+        this.game.physics.arcade.overlap(this.boss.bullets, this.player, enemyHitsPlayer, null, this);
+
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
 
         if(this.player.reviveAble && this.player.revivePenalty < this.game.time.now){
