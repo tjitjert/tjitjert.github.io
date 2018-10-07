@@ -236,7 +236,8 @@ console.log(this.levelConfig.playerLives)
         }
 
         if(this.levelConfig.players === 2) {
-            this.game.physics.arcade.overlap(this.enemyBullets, this.playerTwo, enemyHitsPlayer, null, this);
+            this.game.physics.arcade.overlap(this.playerTwo.bullets, this.boss, bossColision, null, this);
+            this.game.physics.arcade.overlap(this.boss.bullets, this.playerTwo, enemyHitsPlayer, null, this);
             if(this.playerTwo.reviveAble && this.playerTwo.revivePenalty < this.game.time.now){
                 this.playerTwo.revive();
                 this.playerTwo.tint = 500 * 0xffffff;
