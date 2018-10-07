@@ -18,13 +18,15 @@ const fireLocations = [
 ]
 
 export default class Boss extends Phaser.Sprite {
-    constructor(game) {
+    constructor(game, halfLifeInterventionCB) {
         super(game, 200, 200, 'boss1');
         this.game = game;
-        var tween = game.add.tween(this).to( { x: 800 }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        this.tween = game.add.tween(this).to( { x: 800 }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         game.physics.enable(this, Phaser.Physics.ARCADE);
         this.firingTimer = game.time.now + 4000
         this.health = 50;
+        this.halfLifeIntervention = 25;
+        this.halfLifeInterventionCB = halfLifeInterventionCB;
 
         this.bullets = this.game.add.group();
         this.bullets.enableBody = true;
@@ -34,8 +36,6 @@ export default class Boss extends Phaser.Sprite {
         this.bullets.setAll('anchor.y', 1);
         this.bullets.setAll('outOfBoundsKill', true);
         this.bullets.setAll('checkWorldBounds', true);
-
-
     }
     bossFire(){
         //  Grab the first bullet we can from the pool

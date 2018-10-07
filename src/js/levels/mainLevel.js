@@ -1,78 +1,57 @@
 import Hero from '../characters/hero';
-import Boss from '../characters/boss';
+
 function createAliens (context, invaderType) {
 
-    // let xMultiply = 68, yMultiply =70;
-    // let scale = 0.35;
-    // let tweenX = 550;
+    let xMultiply = 68, yMultiply =70;
+    let scale = 0.35;
+    let tweenX = 550;
 
-    // if(invaderType === 1){
-    //     xMultiply = 78; 
-    //     //yMultiply =90;
-    //     scale = 0.25;
-    //     tweenX = 500
-    // }
-
-    // if(invaderType === 2){
-    //     xMultiply = 78; 
-    //     //yMultiply =90;
-    //     scale = 0.25;
-    //     tweenX = 500
-
-    // }
-
-    // if(invaderType === 3){
-    //     xMultiply = 85; 
-    //     //yMultiply =90;
-    //     scale = 0.35;
-    //     tweenX = 500
-
-    // }
-
-    // for (var y = 0; y < 4; y++)
-    // {
-    //     for (var x = 0; x < 10; x++)
-    //     {
-    //         var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
-    //         alien.scale.setTo(scale, scale);
-    //         alien.anchor.setTo(0.5, 0.5);
-    //         //alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
-    //         //alien.play('fly');
-    //         // if(tint){
-    //         //     alien.tint = tint
-    //         // }
-            
-    //         alien.body.moves = false;
-    //     }
-    // }
-
-    // context.aliens.x = 100;
-    // context.aliens.y = 50;
-
-    // //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    // var tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    // tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
-}
-
-function bossColision (boss, bullet) {
-
-    bullet.kill();
-
-    this.game._sfx.impact.play();
-    let explosion = this.explosions.getFirstExists(false);
-
-    explosion.reset(bullet.body.x, bullet.body.y);
-    explosion.play('kaboom', 30, false, true);
-    boss.health --;
-
-    if(boss.health === 0){
-        let explosionOne = this.explosions.getFirstExists(false);
-        explosionOne.scale.setTo(2, 2);
-        explosionOne.reset(boss.body.center.x, boss.body.center.y);
-        explosionOne.play('kaboom', 30, false, true);
-        this.game.camera.shake(0.005, 500);
-        boss.kill();
+    if(invaderType === 1){
+        xMultiply = 78; 
+        //yMultiply =90;
+        scale = 0.25;
+        tweenX = 500
     }
+
+    if(invaderType === 2){
+        xMultiply = 78; 
+        //yMultiply =90;
+        scale = 0.25;
+        tweenX = 500
+
+    }
+
+    if(invaderType === 3){
+        xMultiply = 85; 
+        //yMultiply =90;
+        scale = 0.35;
+        tweenX = 500
+
+    }
+
+    for (var y = 0; y < 4; y++)
+    {
+        for (var x = 0; x < 10; x++)
+        {
+            var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
+            alien.scale.setTo(scale, scale);
+            alien.anchor.setTo(0.5, 0.5);
+            //alien.animations.add('fly', [ 0, 1, 2, 3 ], 20, true);
+            //alien.play('fly');
+            // if(tint){
+            //     alien.tint = tint
+            // }
+            
+            alien.body.moves = false;
+        }
+    }
+
+    context.aliens.x = 100;
+    context.aliens.y = 50;
+
+    //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
+    var tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
 }
 
 function enemyFires (context) {
@@ -161,8 +140,37 @@ function collisionHandler (bullet, alien) {
 
         //the "click to restart" handler
         //game.input.onTap.addOnce(restart,this);
-        if(this.waveCounter ===2){
-            console.log('new state');
+        if(this.waveCounter ===0){
+            if(this.levelConfig.players === 2){
+                let player = 0;
+                let playerTwo = 0;
+
+                this.player.lives.forEachAlive(()=>{
+                    player =  player+1
+                })
+                this.playerTwo.lives.forEachAlive(()=>{
+                    playerTwo =  playerTwo+1
+                })
+                this.game.state.start('bossLevel', true, false, {
+                    players: this.levelConfig.players,
+                    playerScore: this.player.score,
+                    playerTwoScore: this.player.score,
+                    playerLives: player,
+                    playerTwoLives: playerTwo
+                }, this.score); 
+            } else {
+                let player = 0;
+                this.player.lives.forEachAlive(()=>{
+                    player =  player+1
+                })
+
+                this.game.state.start('bossLevel', true, false, {
+                    players: this.levelConfig.players,
+                    playerScore: this.player.score,
+                    playerLives: player
+                }, this.score); 
+            }
+
         } else {
             this.waveCounter++;
             createAliens(this, this.waveCounter);
@@ -266,7 +274,6 @@ export default class MainLevel {
     }
     preload() {
         this.game.load.image('bullet', 'assets/img/bullet.png');
-        this.game.load.image('boss1', 'assets/img/boss1.svg');
         this.game.load.image('enemyBullet', 'assets/img/enemy-bullet.png');
         this.game.load.image('invader1', 'assets/img/bug1.svg');
         this.game.load.image('invader2', 'assets/img/bug2.svg');
@@ -294,6 +301,7 @@ export default class MainLevel {
         this.player =  new Hero(this.game, {
             ship: 'ship1',
             player: 'one',
+            lives: 3,
             positionHUD: 'left',
             spawnPosition: {
                 x: 240,
@@ -310,6 +318,7 @@ export default class MainLevel {
             this.playerTwo =  new Hero(this.game, {
                 ship: 'ship2',
                 player: 'two',
+                lives: 3,
                 positionHUD: 'right',
                 spawnPosition: {
                     x: 1040,
@@ -323,9 +332,6 @@ export default class MainLevel {
             });
             this.game.add.existing(this.playerTwo);
         }
-
-        this.boss = new Boss(this.game);
-        this.game.add.existing(this.boss);
 
         //  The baddies!
         this.aliens = this.game.add.group();
@@ -362,9 +368,6 @@ export default class MainLevel {
         }
 
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
-        this.game.physics.arcade.overlap(this.player.bullets, this.boss, bossColision, null, this);
-        this.game.physics.arcade.overlap(this.boss.bullets, this.player, enemyHitsPlayer, null, this);
-
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
 
         if(this.player.reviveAble && this.player.revivePenalty < this.game.time.now){
