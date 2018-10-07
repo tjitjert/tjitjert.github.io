@@ -140,7 +140,7 @@ function collisionHandler (bullet, alien) {
 
         //the "click to restart" handler
         //game.input.onTap.addOnce(restart,this);
-        if(this.waveCounter ===0){
+        if(this.waveCounter ===2){
             if(this.levelConfig.players === 2){
                 let player = 0;
                 let playerTwo = 0;
