@@ -1,4 +1,5 @@
 import Hero from '../characters/hero';
+
 function createAliens (context, invaderType) {
 
     let xMultiply = 68, yMultiply =70;
@@ -140,7 +141,36 @@ function collisionHandler (bullet, alien) {
         //the "click to restart" handler
         //game.input.onTap.addOnce(restart,this);
         if(this.waveCounter ===2){
-            console.log('new state');
+            if(this.levelConfig.players === 2){
+                let player = 0;
+                let playerTwo = 0;
+
+                this.player.lives.forEachAlive(()=>{
+                    player =  player+1
+                })
+                this.playerTwo.lives.forEachAlive(()=>{
+                    playerTwo =  playerTwo+1
+                })
+                this.game.state.start('bossLevel', true, false, {
+                    players: this.levelConfig.players,
+                    playerScore: this.player.score,
+                    playerTwoScore: this.player.score,
+                    playerLives: player,
+                    playerTwoLives: playerTwo
+                }, this.score); 
+            } else {
+                let player = 0;
+                this.player.lives.forEachAlive(()=>{
+                    player =  player+1
+                })
+
+                this.game.state.start('bossLevel', true, false, {
+                    players: this.levelConfig.players,
+                    playerScore: this.player.score,
+                    playerLives: player
+                }, this.score); 
+            }
+
         } else {
             this.waveCounter++;
             createAliens(this, this.waveCounter);
@@ -271,6 +301,7 @@ export default class MainLevel {
         this.player =  new Hero(this.game, {
             ship: 'ship1',
             player: 'one',
+            lives: 3,
             positionHUD: 'left',
             spawnPosition: {
                 x: 240,
@@ -287,15 +318,16 @@ export default class MainLevel {
             this.playerTwo =  new Hero(this.game, {
                 ship: 'ship2',
                 player: 'two',
+                lives: 3,
                 positionHUD: 'right',
                 spawnPosition: {
                     x: 1040,
                     y: 900
                 },
                 keys: this.game.input.keyboard.addKeys({
-                    left: Phaser.KeyCode.A,
-                    right: Phaser.KeyCode.D,
-                    fire: Phaser.KeyCode.F
+                    left: Phaser.KeyCode.D,
+                    right: Phaser.KeyCode.G,
+                    fire: Phaser.KeyCode.A
                 })
             });
             this.game.add.existing(this.playerTwo);

@@ -1,4 +1,5 @@
 import MainLevel from './levels/mainLevel';
+import BossLevel from './levels/bossLevel';
 import GameMenu from 'capmaningamemenu';
 import {ScoreController, ShowScore, EnterName} from 'capmanhighscore';
 let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
@@ -82,6 +83,8 @@ const mainMenu = new GameMenu(
 
 
 let main1 = new MainLevel();
+let bossLevel = new BossLevel();
+game.state.add('bossLevel', bossLevel);
 game.state.add('main1', main1);
 game.state.add('mainMenu', mainMenu);
 game.state.add('preloader', preloader)

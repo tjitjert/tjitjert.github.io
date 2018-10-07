@@ -3,6 +3,7 @@ const getDefaultSettings = function(game){
         ship: 'ship1',
         player: 'one',
         positionHUD: 'left',
+        lives: 3,
         spawnPosition: {
             x: 640,
             y: 900
@@ -42,7 +43,7 @@ export default class Hero extends Phaser.Sprite {
         this.bullets.setAll('checkWorldBounds', true);
 
         //this.alive = true
-        this.createLives(3);
+        this.createLives(settings.lives);
     }
     update(){
         if (this.alive)
