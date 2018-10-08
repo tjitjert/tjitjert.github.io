@@ -280,7 +280,8 @@ export default class MainLevel {
         this.game.load.image('invader3', 'assets/img/bug3.svg');
         this.game.load.image('invader4', 'assets/img/bug4.svg');
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
-        this.game.load.image('starfield', 'assets/img/starfield.png');
+        this.game.load.image('starfield', 'assets/img/starfield2.png');
+        this.game.load.image('starfield2', 'assets/img/starfield3.png');
     }
     init(config, score) {
         this.game.renderer.renderSession.roundPixels = true;
@@ -289,11 +290,13 @@ export default class MainLevel {
         console.log(this.levelConfig, this.score);
     }
     create() {
+        this.game.stage.backgroundColor = "#000000";
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
+        this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
         //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;
 
     
@@ -360,7 +363,8 @@ export default class MainLevel {
 
     }
     update () {
-        this.starfield.tilePosition.y += 2;
+        this.starfield.tilePosition.y += 1;
+        this.starfield2.tilePosition.y += 2;
 
         if (this.game.time.now > this.firingTimer)
         {

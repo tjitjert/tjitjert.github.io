@@ -155,9 +155,7 @@ export default class MainLevel {
     
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
-        //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;
-console.log(this.levelConfig.playerLives)
-    
+        //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;    
         //  The hero!
         this.player =  new Hero(this.game, {
             ship: 'ship1',
