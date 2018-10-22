@@ -289,7 +289,13 @@ export default class MainLevel {
         this.score = score;
         console.log(this.levelConfig, this.score);
     }
+
+    reset() {
+        this.waveCounter = 0;
+    }
+
     create() {
+        this.reset()
         this.game.stage.backgroundColor = "#000000";
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -297,8 +303,6 @@ export default class MainLevel {
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
         this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
-        //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;
-
     
         //  The hero!
         this.player =  new Hero(this.game, {
@@ -349,9 +353,7 @@ export default class MainLevel {
         this.game._sfx.boden.loop = true;
         this.game._sfx.boden.play();
 
-
-
-                // The enemy's bullets
+        // The enemy's bullets
         this.enemyBullets = this.game.add.group();
         this.enemyBullets.enableBody = true;
         this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -360,8 +362,8 @@ export default class MainLevel {
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
-
     }
+
     update () {
         this.starfield.tilePosition.y += 1;
         this.starfield2.tilePosition.y += 2;
