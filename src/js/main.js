@@ -25,8 +25,6 @@ const enterName = new EnterName(
     }
 );
 
-
-
 let preloader = {
     preload: function(){
         game.load.image('ship1', 'assets/img/Jet-top.svg');
@@ -62,13 +60,20 @@ const mainMenu = new GameMenu(
             {
                 id: 'highScores',
                 text: '- High scores -'
+            },
+            {
+                id: 'back',
+                text: '- Back to launcher -'
             }
         ]
     },
     (button) =>{
         console.log(button);
         let players = 1;
-        if(button.id === 'highScores'){
+        if(button.id === 'back'){
+            window.history.back();
+        }
+        else if(button.id === 'highScores'){
             game.state.start('showScore', true, false, score); 
         } else{
             if(button.id === 'twoPlayers') {
@@ -79,8 +84,6 @@ const mainMenu = new GameMenu(
 
     }
 );
-
-
 
 let main1 = new MainLevel();
 let bossLevel = new BossLevel();
