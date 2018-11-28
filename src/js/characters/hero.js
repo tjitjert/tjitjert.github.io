@@ -24,7 +24,9 @@ export default class Hero extends Phaser.Sprite {
         this.scale.setTo(0.45, 0.45);
         this.anchor.setTo(0.5, 0.5);
         this.hasShield = false;
+        
         game.physics.enable(this, Phaser.Physics.ARCADE);
+        this.body.collideWorldBounds = true;
 
         this.lives = game.add.group();
         this.bulletTime= 0;

@@ -297,6 +297,7 @@ export default class MainLevel {
     create() {
         this.reset()
         this.game.stage.backgroundColor = "#000000";
+        
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
