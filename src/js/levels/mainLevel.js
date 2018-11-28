@@ -103,6 +103,62 @@ function setupInvader (invader) {
 
 }
 
+function createBlindWalls(context){
+
+    for (var i = 0; i < 75; i++) { 
+        let sprite = context.enemyWalls.create(20*i, 865, 'invisible-wall');    
+        // physic properties
+        context.game.physics.enable(sprite);
+        sprite.body.immovable = true;
+        sprite.body.allowGravity = false;
+    }
+}
+
+function enemyHitsWall (){
+
+
+
+
+    if(this.levelConfig.players === 2){
+            if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                    if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                        this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                            this.game.state.start('showScore', true, false, this.score);
+                        });
+                    } else {
+                        this.game.state.start('showScore', true, false, this.score);
+                    }
+                });
+            } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                    this.game.state.start('showScore', true, false, this.score);
+                });
+            }
+            else {
+                this.game.state.start('showScore', true, false, this.score); 
+            }
+    } else {
+            if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                    this.game.state.start('showScore', true, false, this.score);
+                });
+            } else {
+                this.game.state.start('showScore', true, false, this.score); 
+            }
+
+    }
+
+
+
+
+
+
+
+    
+
+}
+
 function collisionHandler (bullet, alien) {
 
     //  When a bullet hits an alien we kill them both
@@ -248,9 +304,6 @@ function enemyHitsPlayer (player,bullet) {
             }
         }
     }
-
-
-
 }
 
 
@@ -282,6 +335,7 @@ export default class MainLevel {
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
         this.game.load.image('starfield', 'assets/img/starfield2.png');
         this.game.load.image('starfield2', 'assets/img/starfield3.png');
+        this.game.load.image('invisible-wall', 'assets/img/invisible_wall.png');
     }
     init(config, score) {
         this.game.renderer.renderSession.roundPixels = true;
@@ -363,6 +417,10 @@ export default class MainLevel {
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
+
+        this.enemyWalls = this.game.add.group();
+        this.enemyWalls.visible = false;
+        createBlindWalls(this);
     }
 
     update () {
@@ -373,7 +431,7 @@ export default class MainLevel {
         {
             enemyFires(this);
         }
-
+        this.game.physics.arcade.overlap(this.aliens, this.enemyWalls, enemyHitsWall, null, this);
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
 
@@ -396,5 +454,6 @@ export default class MainLevel {
                 this.playerTwo.shieldTimer = this.game.time.now + 2000;
             }
         }
+ 
     }
 }
