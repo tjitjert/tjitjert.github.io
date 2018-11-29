@@ -35,40 +35,88 @@ function bossColision (boss, bullet) {
     }
 }
 
-function endGame (context){
-    let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
-    gstateText.anchor.setTo(0.5, 0.5);
+function endGame (context, playersDeath){
 
-    if(context.levelConfig.players === 2){
 
-        if(context.score.isScoreMoreThenLast(context.player.score)){
-            context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
-                if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
-                    context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
+ 
+    if(context.levelConfig.endGame || playersDeath){
+        let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
+        gstateText.anchor.setTo(0.5, 0.5);
+
+        if(context.levelConfig.players === 2){
+            if(context.score.isScoreMoreThenLast(context.player.score)){
+                context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
+                    if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
+                        context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
+                            context.game.state.start('showScore', true, false, context.score);
+                        });
+                    } else {
                         context.game.state.start('showScore', true, false, context.score);
-                    });
-                } else {
+                    }
+                });
+            } else if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
+                context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
                     context.game.state.start('showScore', true, false, context.score);
-                }
-            });
-        } else if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
-            context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
-                context.game.state.start('showScore', true, false, context.score);
-            });
+                });
+            }
+            else {
+                context.game.state.start('showScore', true, false, context.score); 
+            }
+        
+        }else {
+            if(context.score.isScoreMoreThenLast(context.player.score)){
+                context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
+                    context.game.state.start('showScore', true, false, context.score);
+                });
+            } else {
+                context.game.state.start('showScore', true, false, context.score); 
+            }
         }
-        else {
-            context.game.state.start('showScore', true, false, context.score); 
-        }
+
+    } else {
+
+
+
+        if(context.levelConfig.players === 2){
+            let player = 0;
+            let playerTwo = 0;
     
-    }else {
-        if(context.score.isScoreMoreThenLast(context.player.score)){
-            context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
-                context.game.state.start('showScore', true, false, context.score);
-            });
-        } else {
-            context.game.state.start('showScore', true, false, context.score); 
+            context.player.lives.forEachAlive(()=>{
+                player =  player+1
+            })
+            context.playerTwo.lives.forEachAlive(()=>{
+                playerTwo =  playerTwo+1
+            })
+            context.game.state.start('main1', true, false, 
+            {
+                players: context.levelConfig.players,
+                playerScore: context.player.score,
+                playerTwoScore: context.playerTwo.score,
+                playerLives: player,
+                playerTwoLives: playerTwo,
+                shootSpeed: 1000, 
+                endGame: true
+            }, context.score);
+        }else {
+            let player = 0;
+    
+            context.player.lives.forEachAlive(()=>{
+                player =  player+1
+            })
+
+            context.game.state.start('main1', true, false, 
+                {
+                    players: context.levelConfig.players,
+                    playerScore: context.player.score,
+                    playerLives: player,
+                    shootSpeed: 1000, 
+                    endGame: true
+                }, 
+                context.score);
         }
     }
+
+
 
 }
 
@@ -111,11 +159,11 @@ function enemyHitsPlayer (player,bullet) {
 
     if(this.levelConfig.players === 2){
         if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
-            endGame(this);
+            endGame(this, true);
         }
     } else {
         if(this.player.lives.countLiving() <1 ){
-            endGame(this);
+            endGame(this, true);
         }
     }
 }

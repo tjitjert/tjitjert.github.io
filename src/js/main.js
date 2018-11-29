@@ -2,6 +2,18 @@ import MainLevel from './levels/mainLevel';
 import BossLevel from './levels/bossLevel';
 import GameMenu from 'capmaningamemenu';
 import {ScoreController, ShowScore, EnterName} from 'capmanhighscore';
+
+
+
+document.addEventListener("keydown", function(e) {
+    e.preventDefault();
+
+  });
+document.addEventListener("keyup", function(e) {
+    e.preventDefault();
+
+  });
+
 let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
 
 var score = new ScoreController({name: 'aTestGame'});

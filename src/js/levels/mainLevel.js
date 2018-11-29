@@ -89,8 +89,8 @@ function enemyFires (context) {
         } else {
             context.game.physics.arcade.moveToObject(enemyBullet,context.playerTwo,120);
         }
-        
-        context.firingTimer = context.game.time.now + 2000;
+        let shootspeed = context.levelConfig.shootSpeed || 2000;
+        context.firingTimer = context.game.time.now + shootspeed;
     }
 
 }
@@ -147,15 +147,7 @@ function enemyHitsWall (){
                 this.game.state.start('showScore', true, false, this.score); 
             }
 
-    }
-
-
-
-
-
-
-
-    
+    }    
 
 }
 
@@ -212,7 +204,8 @@ function collisionHandler (bullet, alien) {
                     playerScore: this.player.score,
                     playerTwoScore: this.player.score,
                     playerLives: player,
-                    playerTwoLives: playerTwo
+                    playerTwoLives: playerTwo,
+                    endGame: this.levelConfig.endGame 
                 }, this.score); 
             } else {
                 let player = 0;
@@ -223,7 +216,8 @@ function collisionHandler (bullet, alien) {
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
-                    playerLives: player
+                    playerLives: player,
+                    endGame: this.levelConfig.endGame 
                 }, this.score); 
             }
 
@@ -363,7 +357,8 @@ export default class MainLevel {
         this.player =  new Hero(this.game, {
             ship: 'ship1',
             player: 'one',
-            lives: 3,
+//            lives: 3,
+            lives: this.levelConfig.playerLives || 3,
             positionHUD: 'left',
             spawnPosition: {
                 x: 240,
@@ -375,12 +370,15 @@ export default class MainLevel {
                 fire: Phaser.KeyCode.CONTROL
             })
         });
+        let addedScore = this.levelConfig.playerScore ||0;
+        this.player.score = this.player.score + addedScore;
         this.game.add.existing(this.player);
         if(this.levelConfig.players === 2) {
             this.playerTwo =  new Hero(this.game, {
                 ship: 'ship2',
                 player: 'two',
-                lives: 3,
+                //lives: 3,
+                lives: this.levelConfig.playerTwoLives,
                 positionHUD: 'right',
                 spawnPosition: {
                     x: 1040,
@@ -392,6 +390,8 @@ export default class MainLevel {
                     fire: Phaser.KeyCode.A
                 })
             });
+            let addedScorepTwo = this.levelConfig.playerTwoScore || 0
+            this.playerTwo.score = this.playerTwo.score + addedScorepTwo;
             this.game.add.existing(this.playerTwo);
         }
 
