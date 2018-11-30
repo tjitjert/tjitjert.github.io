@@ -36,9 +36,6 @@ function bossColision (boss, bullet) {
 }
 
 function endGame (context, playersDeath){
-
-
- 
     if(context.levelConfig.endGame || playersDeath){
         let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
         gstateText.anchor.setTo(0.5, 0.5);
@@ -74,9 +71,6 @@ function endGame (context, playersDeath){
         }
 
     } else {
-
-
-
         if(context.levelConfig.players === 2){
             let player = 0;
             let playerTwo = 0;
