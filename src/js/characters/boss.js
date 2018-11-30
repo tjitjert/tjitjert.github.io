@@ -24,7 +24,7 @@ export default class Boss extends Phaser.Sprite {
         this.tween = game.add.tween(this).to( { x: 800 }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         game.physics.enable(this, Phaser.Physics.ARCADE);
         this.firingTimer = game.time.now + 4000
-        this.health = 2;
+        this.health = 50;
         this.halfLifeIntervention = 25;
         this.halfLifeInterventionCB = halfLifeInterventionCB;
 

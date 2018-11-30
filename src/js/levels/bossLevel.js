@@ -37,6 +37,7 @@ function bossColision (boss, bullet) {
 
 function endGame (context, playersDeath){
     if(context.levelConfig.endGame || playersDeath){
+        context.levelConfig.endGame = false;
         let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
         gstateText.anchor.setTo(0.5, 0.5);
 

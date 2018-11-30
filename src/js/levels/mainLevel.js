@@ -29,9 +29,9 @@ function createAliens (context, invaderType) {
 
     }
 
-    for (var y = 0; y < 1; y++)
+    for (var y = 0; y < 4; y++)
     {
-        for (var x = 0; x < 1; x++)
+        for (var x = 0; x < 10; x++)
         {
             var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
             alien.scale.setTo(scale, scale);
