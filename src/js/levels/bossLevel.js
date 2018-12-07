@@ -36,6 +36,7 @@ function bossColision (boss, bullet) {
 }
 
 function endGame (context, playersDeath){
+    context.game._sfx.boss.stop();
     if(context.levelConfig.endGame || playersDeath){
         context.levelConfig.endGame = false;
         let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
@@ -43,30 +44,36 @@ function endGame (context, playersDeath){
 
         if(context.levelConfig.players === 2){
             if(context.score.isScoreMoreThenLast(context.player.score)){
+                context.game._sfx.mainMenu.play();
                 context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
                     if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
                         context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
                             context.game.state.start('showScore', true, false, context.score);
                         });
                     } else {
+                        context.game._sfx.mainMenu.play();
                         context.game.state.start('showScore', true, false, context.score);
                     }
                 });
             } else if(context.score.isScoreMoreThenLast(context.playerTwo.score)){
+                context.game._sfx.mainMenu.play();
                 context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
                     context.game.state.start('showScore', true, false, context.score);
                 });
             }
             else {
+                context.game._sfx.mainMenu.play();
                 context.game.state.start('showScore', true, false, context.score); 
             }
         
         }else {
             if(context.score.isScoreMoreThenLast(context.player.score)){
+                context.game._sfx.mainMenu.play();
                 context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
                     context.game.state.start('showScore', true, false, context.score);
                 });
             } else {
+                context.game._sfx.mainMenu.play();
                 context.game.state.start('showScore', true, false, context.score); 
             }
         }
@@ -246,8 +253,8 @@ export default class MainLevel {
         this.explosions = this.game.add.group();
         this.explosions.createMultiple(30, 'kaboom');
         this.explosions.forEach(setupInvader, this);
-        this.game._sfx.boden.loop = true;
-        this.game._sfx.boden.play();
+        this.game._sfx.boss.loop = true;
+        this.game._sfx.boss.play();
 
 
 

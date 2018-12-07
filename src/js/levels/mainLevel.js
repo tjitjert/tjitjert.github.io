@@ -199,6 +199,9 @@ function collisionHandler (bullet, alien) {
                 this.playerTwo.lives.forEachAlive(()=>{
                     playerTwo =  playerTwo+1
                 })
+                this.gameEnded = true;
+                this.game._sfx.bodenLoop.stop();
+                this.game._sfx.boden.stop();
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
@@ -212,7 +215,9 @@ function collisionHandler (bullet, alien) {
                 this.player.lives.forEachAlive(()=>{
                     player =  player+1
                 })
-
+                this.gameEnded = true;
+                this.game._sfx.bodenLoop.stop();
+                this.game._sfx.boden.stop();
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
@@ -262,23 +267,30 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
-
+            this.gameEnded = true;
+            this.game._sfx.bodenLoop.stop();
+            this.game._sfx.boden.stop();
             if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
                     if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                        this.game._sfx.mainMenu.play();
                         this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                             this.game.state.start('showScore', true, false, this.score);
                         });
                     } else {
+                        this.game._sfx.mainMenu.play();
                         this.game.state.start('showScore', true, false, this.score);
                     }
                 });
             } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                     this.game.state.start('showScore', true, false, this.score);
                 });
             }
             else {
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('showScore', true, false, this.score); 
             }
 
@@ -288,12 +300,17 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 ){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
-
+            this.gameEnded = true;
+            this.game._sfx.bodenLoop.stop();
+            this.game._sfx.boden.stop();
+            
             if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
                     this.game.state.start('showScore', true, false, this.score);
                 });
             } else {
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('showScore', true, false, this.score); 
             }
         }
@@ -405,7 +422,14 @@ export default class MainLevel {
         this.explosions = this.game.add.group();
         this.explosions.createMultiple(30, 'kaboom');
         this.explosions.forEach(setupInvader, this);
-        this.game._sfx.boden.loop = true;
+        this.game._sfx.bodenLoop.loop = true;
+
+        this.game._sfx.boden.onStop.addOnce( ()=>{
+            if(!this.gameEnded){
+                this.game._sfx.bodenLoop.play();
+            }
+            
+        });
         this.game._sfx.boden.play();
 
         // The enemy's bullets

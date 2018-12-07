@@ -32,14 +32,21 @@ let preloader = {
         game.load.image('ship2', 'assets/img/Jet2-top.svg');
         game.load.audio('sfx:shot', 'assets/audio/shot.wav');
         game.load.audio('sfx:impact', 'assets/audio/impact.wav');
-        game.load.audio('sfx:boden', 'assets/audio/boden.ogg');
+        game.load.audio('sfx:boden', 'assets/audio/Superhero_pack/Superhero_violin.ogg');
+        game.load.audio('sfx:bodenLoop', 'assets/audio/Superhero_pack/Superhero_violin_no_intro.ogg');
+        game.load.audio('sfx:spacetheme', 'assets/audio/spacetheme.ogg');
+        game.load.audio('sfx:bossTheme', 'assets/audio/Continuum.mp3');
     },
     create: function(){
         game._sfx = {
             shot: this.game.add.audio('sfx:shot'),
             impact: this.game.add.audio('sfx:impact'),
-            boden: this.game.add.audio('sfx:boden')
+            boden: this.game.add.audio('sfx:boden'),
+            bodenLoop: this.game.add.audio('sfx:bodenLoop'),
+            boss: this.game.add.audio('sfx:bossTheme'),
+            mainMenu: this.game.add.audio('sfx:spacetheme')
         };
+        this.game._sfx.mainMenu.play();
         game.state.start('mainMenu', true, false);
     }
 }
@@ -77,6 +84,7 @@ const mainMenu = new GameMenu(
         else if(button.id === 'highScores'){
             game.state.start('showScore', true, false, score); 
         } else{
+            game._sfx.mainMenu.stop();
             if(button.id === 'twoPlayers') {
                 players = 2;
             }
