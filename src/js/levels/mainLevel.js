@@ -1,5 +1,33 @@
 import Hero from '../characters/hero';
 
+
+
+function setDummyInputs(context) {
+    var inputOne = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.UP).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.ALT).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.P).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.Z).isDown,
+    };
+    var inputTwo = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.R).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.F).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.Q).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.S).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.W).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.K).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.I).isDown
+    };
+}
+
+
+
+
+
+
 function createAliens (context, invaderType) {
 
     let xMultiply = 68, yMultiply =70;
@@ -369,7 +397,7 @@ export default class MainLevel {
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
         this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
-    
+        setDummyInputs(this);
         //  The hero!
         this.player =  new Hero(this.game, {
             ship: 'ship1',

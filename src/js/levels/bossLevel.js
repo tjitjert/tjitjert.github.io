@@ -1,5 +1,25 @@
 import Hero from '../characters/hero';
 import Boss from '../characters/boss';
+function setDummyInputs(context) {
+    var inputOne = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.UP).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.ALT).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.P).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.Z).isDown,
+    };
+    var inputTwo = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.R).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.F).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.Q).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.S).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.W).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.K).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.I).isDown
+    };
+}
 
 function bossColision (boss, bullet) {
 
@@ -202,7 +222,7 @@ export default class MainLevel {
     create() {
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    
+        setDummyInputs(this);
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
         //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;    
