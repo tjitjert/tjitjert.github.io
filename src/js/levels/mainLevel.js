@@ -1,7 +1,5 @@
 import Hero from '../characters/hero';
 
-
-
 function setDummyInputs(context) {
     var inputOne = {
         "up": context.game.input.keyboard.addKey(Phaser.Keyboard.UP).isDown,
@@ -23,13 +21,7 @@ function setDummyInputs(context) {
     };
 }
 
-
-
-
-
-
 function createAliens (context, invaderType) {
-
     let xMultiply = 68, yMultiply =70;
     let scale = 0.35;
     let tweenX = 550;
@@ -46,7 +38,6 @@ function createAliens (context, invaderType) {
         //yMultiply =90;
         scale = 0.25;
         tweenX = 500
-
     }
 
     if(invaderType === 3){
@@ -54,7 +45,6 @@ function createAliens (context, invaderType) {
         //yMultiply =90;
         scale = 0.35;
         tweenX = 500
-
     }
 
     for (var y = 0; y < 4; y++)
@@ -96,8 +86,7 @@ function enemyFires (context) {
     });
 
 
-    if (enemyBullet && context.livingEnemies.length > 0)
-    {
+    if (enemyBullet && context.livingEnemies.length > 0) {
         
         var random= context.game.rnd.integerInRange(0,context.livingEnemies.length-1);
 
@@ -143,37 +132,33 @@ function createBlindWalls(context){
 }
 
 function enemyHitsWall (){
-
-
-
-
     if(this.levelConfig.players === 2){
-            if(this.score.isScoreMoreThenLast(this.player.score)){
-                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
-                    if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
-                        this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
-                            this.game.state.start('showScore', true, false, this.score);
-                        });
-                    } else {
+        if(this.score.isScoreMoreThenLast(this.player.score)){
+            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                    this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                         this.game.state.start('showScore', true, false, this.score);
-                    }
-                });
-            } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
-                this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                    });
+                } else {
                     this.game.state.start('showScore', true, false, this.score);
-                });
-            }
-            else {
-                this.game.state.start('showScore', true, false, this.score); 
-            }
+                }
+            });
+        } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+            this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                this.game.state.start('showScore', true, false, this.score);
+            });
+        }
+        else {
+            this.game.state.start('showScore', true, false, this.score); 
+        }
     } else {
-            if(this.score.isScoreMoreThenLast(this.player.score)){
-                this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
-                    this.game.state.start('showScore', true, false, this.score);
-                });
-            } else {
-                this.game.state.start('showScore', true, false, this.score); 
-            }
+        if(this.score.isScoreMoreThenLast(this.player.score)){
+            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                this.game.state.start('showScore', true, false, this.score);
+            });
+        } else {
+            this.game.state.start('showScore', true, false, this.score); 
+        }
 
     }    
 
@@ -402,7 +387,6 @@ export default class MainLevel {
         this.player =  new Hero(this.game, {
             ship: 'ship1',
             player: 'one',
-//            lives: 3,
             lives: this.levelConfig.playerLives || 3,
             positionHUD: 'left',
             spawnPosition: {
@@ -423,7 +407,7 @@ export default class MainLevel {
                 ship: 'ship2',
                 player: 'two',
                 //lives: 3,
-                lives: this.levelConfig.playerTwoLives,
+                lives: this.levelConfig.playerLives || 3,
                 positionHUD: 'right',
                 spawnPosition: {
                     x: 1040,
@@ -506,6 +490,5 @@ export default class MainLevel {
                 this.playerTwo.shieldTimer = this.game.time.now + 2000;
             }
         }
- 
     }
 }
