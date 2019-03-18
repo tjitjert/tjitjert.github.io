@@ -1,7 +1,27 @@
 import Hero from '../characters/hero';
 
-function createAliens (context, invaderType) {
+function setDummyInputs(context) {
+    var inputOne = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.UP).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.DOWN).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.ALT).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.P).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.Z).isDown,
+    };
+    var inputTwo = {
+        "up": context.game.input.keyboard.addKey(Phaser.Keyboard.R).isDown,
+        "down": context.game.input.keyboard.addKey(Phaser.Keyboard.F).isDown,
+        "white": context.game.input.keyboard.addKey(Phaser.Keyboard.Q).isDown,
+        "black": context.game.input.keyboard.addKey(Phaser.Keyboard.S).isDown,
+        "blue1": context.game.input.keyboard.addKey(Phaser.Keyboard.W).isDown,
+        "blue2": context.game.input.keyboard.addKey(Phaser.Keyboard.K).isDown,
+        "blue3": context.game.input.keyboard.addKey(Phaser.Keyboard.I).isDown
+    };
+}
 
+function createAliens (context, invaderType) {
     let xMultiply = 68, yMultiply =70;
     let scale = 0.35;
     let tweenX = 550;
@@ -18,7 +38,6 @@ function createAliens (context, invaderType) {
         //yMultiply =90;
         scale = 0.25;
         tweenX = 500
-
     }
 
     if(invaderType === 3){
@@ -26,7 +45,6 @@ function createAliens (context, invaderType) {
         //yMultiply =90;
         scale = 0.35;
         tweenX = 500
-
     }
 
     for (var y = 0; y < 4; y++)
@@ -68,8 +86,7 @@ function enemyFires (context) {
     });
 
 
-    if (enemyBullet && context.livingEnemies.length > 0)
-    {
+    if (enemyBullet && context.livingEnemies.length > 0) {
         
         var random= context.game.rnd.integerInRange(0,context.livingEnemies.length-1);
 
@@ -89,8 +106,8 @@ function enemyFires (context) {
         } else {
             context.game.physics.arcade.moveToObject(enemyBullet,context.playerTwo,120);
         }
-        
-        context.firingTimer = context.game.time.now + 2000;
+        let shootspeed = context.levelConfig.shootSpeed || 2000;
+        context.firingTimer = context.game.time.now + shootspeed;
     }
 
 }
@@ -100,6 +117,50 @@ function setupInvader (invader) {
     invader.anchor.x = 0.5;
     invader.anchor.y = 0.5;
     invader.animations.add('kaboom');
+
+}
+
+function createBlindWalls(context){
+
+    for (var i = 0; i < 75; i++) { 
+        let sprite = context.enemyWalls.create(20*i, 865, 'invisible-wall');    
+        // physic properties
+        context.game.physics.enable(sprite);
+        sprite.body.immovable = true;
+        sprite.body.allowGravity = false;
+    }
+}
+
+function enemyHitsWall (){
+    if(this.levelConfig.players === 2){
+        if(this.score.isScoreMoreThenLast(this.player.score)){
+            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                    this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                        this.game.state.start('showScore', true, false, this.score);
+                    });
+                } else {
+                    this.game.state.start('showScore', true, false, this.score);
+                }
+            });
+        } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+            this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
+                this.game.state.start('showScore', true, false, this.score);
+            });
+        }
+        else {
+            this.game.state.start('showScore', true, false, this.score); 
+        }
+    } else {
+        if(this.score.isScoreMoreThenLast(this.player.score)){
+            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
+                this.game.state.start('showScore', true, false, this.score);
+            });
+        } else {
+            this.game.state.start('showScore', true, false, this.score); 
+        }
+
+    }    
 
 }
 
@@ -151,23 +212,30 @@ function collisionHandler (bullet, alien) {
                 this.playerTwo.lives.forEachAlive(()=>{
                     playerTwo =  playerTwo+1
                 })
+                this.gameEnded = true;
+                this.game._sfx.bodenLoop.stop();
+                this.game._sfx.boden.stop();
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
                     playerTwoScore: this.player.score,
                     playerLives: player,
-                    playerTwoLives: playerTwo
+                    playerTwoLives: playerTwo,
+                    endGame: this.levelConfig.endGame 
                 }, this.score); 
             } else {
                 let player = 0;
                 this.player.lives.forEachAlive(()=>{
                     player =  player+1
                 })
-
+                this.gameEnded = true;
+                this.game._sfx.bodenLoop.stop();
+                this.game._sfx.boden.stop();
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
-                    playerLives: player
+                    playerLives: player,
+                    endGame: this.levelConfig.endGame 
                 }, this.score); 
             }
 
@@ -212,23 +280,30 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
-
+            this.gameEnded = true;
+            this.game._sfx.bodenLoop.stop();
+            this.game._sfx.boden.stop();
             if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
                     if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                        this.game._sfx.mainMenu.play();
                         this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                             this.game.state.start('showScore', true, false, this.score);
                         });
                     } else {
+                        this.game._sfx.mainMenu.play();
                         this.game.state.start('showScore', true, false, this.score);
                     }
                 });
             } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
                     this.game.state.start('showScore', true, false, this.score);
                 });
             }
             else {
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('showScore', true, false, this.score); 
             }
 
@@ -238,19 +313,21 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 ){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
-
+            this.gameEnded = true;
+            this.game._sfx.bodenLoop.stop();
+            this.game._sfx.boden.stop();
+            
             if(this.score.isScoreMoreThenLast(this.player.score)){
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
                     this.game.state.start('showScore', true, false, this.score);
                 });
             } else {
+                this.game._sfx.mainMenu.play();
                 this.game.state.start('showScore', true, false, this.score); 
             }
         }
     }
-
-
-
 }
 
 
@@ -282,6 +359,7 @@ export default class MainLevel {
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
         this.game.load.image('starfield', 'assets/img/starfield2.png');
         this.game.load.image('starfield2', 'assets/img/starfield3.png');
+        this.game.load.image('invisible-wall', 'assets/img/invisible_wall.png');
     }
     init(config, score) {
         this.game.renderer.renderSession.roundPixels = true;
@@ -289,22 +367,27 @@ export default class MainLevel {
         this.score = score;
         console.log(this.levelConfig, this.score);
     }
+
+    reset() {
+        this.waveCounter = 0;
+    }
+
     create() {
+        this.reset()
         this.game.stage.backgroundColor = "#000000";
+        
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
         this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
-        //this.starfield.tint = (Math.floor(Math.random() * 1000)+700) * 0xffffff;
-
-    
+        setDummyInputs(this);
         //  The hero!
         this.player =  new Hero(this.game, {
             ship: 'ship1',
             player: 'one',
-            lives: 3,
+            lives: this.levelConfig.playerLives || 3,
             positionHUD: 'left',
             spawnPosition: {
                 x: 240,
@@ -316,12 +399,15 @@ export default class MainLevel {
                 fire: Phaser.KeyCode.CONTROL
             })
         });
+        let addedScore = this.levelConfig.playerScore ||0;
+        this.player.score = this.player.score + addedScore;
         this.game.add.existing(this.player);
         if(this.levelConfig.players === 2) {
             this.playerTwo =  new Hero(this.game, {
                 ship: 'ship2',
                 player: 'two',
-                lives: 3,
+                //lives: 3,
+                lives: this.levelConfig.playerLives || 3,
                 positionHUD: 'right',
                 spawnPosition: {
                     x: 1040,
@@ -333,6 +419,8 @@ export default class MainLevel {
                     fire: Phaser.KeyCode.A
                 })
             });
+            let addedScorepTwo = this.levelConfig.playerTwoScore || 0
+            this.playerTwo.score = this.playerTwo.score + addedScorepTwo;
             this.game.add.existing(this.playerTwo);
         }
 
@@ -346,12 +434,17 @@ export default class MainLevel {
         this.explosions = this.game.add.group();
         this.explosions.createMultiple(30, 'kaboom');
         this.explosions.forEach(setupInvader, this);
-        this.game._sfx.boden.loop = true;
+        this.game._sfx.bodenLoop.loop = true;
+
+        this.game._sfx.boden.onStop.addOnce( ()=>{
+            if(!this.gameEnded){
+                this.game._sfx.bodenLoop.play();
+            }
+            
+        });
         this.game._sfx.boden.play();
 
-
-
-                // The enemy's bullets
+        // The enemy's bullets
         this.enemyBullets = this.game.add.group();
         this.enemyBullets.enableBody = true;
         this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -361,7 +454,11 @@ export default class MainLevel {
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
+        this.enemyWalls = this.game.add.group();
+        this.enemyWalls.visible = false;
+        createBlindWalls(this);
     }
+
     update () {
         this.starfield.tilePosition.y += 1;
         this.starfield2.tilePosition.y += 2;
@@ -370,7 +467,7 @@ export default class MainLevel {
         {
             enemyFires(this);
         }
-
+        this.game.physics.arcade.overlap(this.aliens, this.enemyWalls, enemyHitsWall, null, this);
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
 
