@@ -314,7 +314,7 @@ export default class MainLevel {
                 this.playerTwo.shieldTimer = this.game.time.now + 2000;
             }
         }
-        if(this.endGameTimer === this.game.time.now ){
+        if(this.game.time.now >= this.endGameTimer){
             endGame(this);
         }
     }
