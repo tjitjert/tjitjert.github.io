@@ -57,6 +57,10 @@ function bossColision (boss, bullet) {
 
 function endGame (context, playersDeath){
     context.game._sfx.boss.stop();
+
+    console.log('endGame');
+    console.log(context.levelConfig.endGame )
+
     if(context.levelConfig.endGame || playersDeath){
         context.levelConfig.endGame = false;
         let gstateText = context.game.add.text(context.game.world.centerX,context.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
@@ -80,24 +84,23 @@ function endGame (context, playersDeath){
                 context.game.state.start('enterName', true, false, context.score, context.playerTwo.score, ()=>{
                     context.game.state.start('showScore', true, false, context.score);
                 });
-            }
-            else {
+            } else {
                 context.game._sfx.mainMenu.play();
                 context.game.state.start('showScore', true, false, context.score); 
             }
-        
-        }else {
+        } else {
             if(context.score.isScoreMoreThenLast(context.player.score)){
+                console.log('high score');
                 context.game._sfx.mainMenu.play();
                 context.game.state.start('enterName', true, false, context.score, context.player.score, ()=>{
                     context.game.state.start('showScore', true, false, context.score);
                 });
             } else {
+                console.log('no high score');
                 context.game._sfx.mainMenu.play();
                 context.game.state.start('showScore', true, false, context.score); 
             }
         }
-
     } else {
         if(context.levelConfig.players === 2){
             let player = 0;
@@ -119,13 +122,14 @@ function endGame (context, playersDeath){
                 shootSpeed: 1000, 
                 endGame: true
             }, context.score);
-        }else {
+        } else {
+            console.log('no endGame')
             let player = 0;
     
             context.player.lives.forEachAlive(()=>{
                 player =  player+1
             })
-
+            console.log('starting main1');
             context.game.state.start('main1', true, false, 
                 {
                     players: context.levelConfig.players,
@@ -137,9 +141,6 @@ function endGame (context, playersDeath){
                 context.score);
         }
     }
-
-
-
 }
 
 function setupInvader (invader) {

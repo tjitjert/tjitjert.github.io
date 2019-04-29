@@ -47,9 +47,9 @@ function createAliens (context, invaderType) {
         tweenX = 500
     }
 
-    for (var y = 0; y < 4; y++)
+    for (var y = 0; y < 1; y++)
     {
-        for (var x = 0; x < 10; x++)
+        for (var x = 0; x < 1; x++)
         {
             var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
             alien.scale.setTo(scale, scale);
@@ -185,8 +185,7 @@ function collisionHandler (bullet, alien) {
     explosion.reset(alien.body.x, alien.body.y);
     explosion.play('kaboom', 30, false, true);
 
-    if (this.aliens.countLiving() == 0)
-    {
+    if (this.aliens.countLiving() == 0) {
         this.player.bullets.callAll('kill');
         if(this.levelConfig.players === 2){
             this.playerTwo.bullets.callAll('kill');
@@ -203,6 +202,7 @@ function collisionHandler (bullet, alien) {
         //game.input.onTap.addOnce(restart,this);
         if(this.waveCounter ===2){
             if(this.levelConfig.players === 2){
+                console.log('waves finished');
                 let player = 0;
                 let playerTwo = 0;
 
@@ -215,6 +215,7 @@ function collisionHandler (bullet, alien) {
                 this.gameEnded = true;
                 this.game._sfx.bodenLoop.stop();
                 this.game._sfx.boden.stop();
+                console.log('starting bossLevel');
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
@@ -222,8 +223,11 @@ function collisionHandler (bullet, alien) {
                     playerLives: player,
                     playerTwoLives: playerTwo,
                     endGame: this.levelConfig.endGame 
-                }, this.score); 
+                }, this.score);
             } else {
+                console.log('wave levelConfig.endGame');
+                console.log(this.levelConfig.endGame);
+
                 let player = 0;
                 this.player.lives.forEachAlive(()=>{
                     player =  player+1
@@ -231,6 +235,7 @@ function collisionHandler (bullet, alien) {
                 this.gameEnded = true;
                 this.game._sfx.bodenLoop.stop();
                 this.game._sfx.boden.stop();
+                console.log('starting bossLevel');
                 this.game.state.start('bossLevel', true, false, {
                     players: this.levelConfig.players,
                     playerScore: this.player.score,
@@ -238,13 +243,12 @@ function collisionHandler (bullet, alien) {
                     endGame: this.levelConfig.endGame 
                 }, this.score); 
             }
-
         } else {
+            console.log('starting next wave')
             this.waveCounter++;
             createAliens(this, this.waveCounter);
         }
     }
-
 }
 
 function enemyHitsPlayer (player,bullet) {

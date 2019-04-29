@@ -91,6 +91,10 @@ const mainMenu = new GameMenu(
     },
     (button) =>{
         console.log(button);
+        let main1 = new MainLevel();
+        let bossLevel = new BossLevel();
+        game.state.add('bossLevel', bossLevel);
+        game.state.add('main1', main1);
         let players = 1;
         if(button.id === 'back'){
             window.history.back();
@@ -108,10 +112,7 @@ const mainMenu = new GameMenu(
     }
 );
 
-let main1 = new MainLevel();
-let bossLevel = new BossLevel();
-game.state.add('bossLevel', bossLevel);
-game.state.add('main1', main1);
+
 game.state.add('mainMenu', mainMenu);
 game.state.add('preloader', preloader)
 game.state.add('showScore', showScore);
