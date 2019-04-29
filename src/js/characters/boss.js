@@ -52,5 +52,4 @@ export default class Boss extends Phaser.Sprite {
             this.bossFire();
         }
     }
-
 }
