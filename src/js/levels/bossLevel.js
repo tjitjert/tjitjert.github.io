@@ -221,7 +221,7 @@ export default class MainLevel {
         this.score = score;
     }
     create() {
-    
+        this.endGameTimer = undefined;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         setDummyInputs(this);
         //  The scrolling starfield background
@@ -316,6 +316,7 @@ export default class MainLevel {
             }
         }
         if(this.game.time.now >= this.endGameTimer){
+            console.log('Ending game because of endGameTimer')
             endGame(this);
         }
     }
