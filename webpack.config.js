@@ -16,6 +16,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
         {from: './src/html/**/*', to:'', flatten: true},
+        {from: './src/css/**/*', to:'', flatten: true},
         {from: './vendor/**/*', to:'', flatten: true},
         {from: './assets/img/**/*', to: ''},
         {from: './assets/audio/**/*', to: ''},
