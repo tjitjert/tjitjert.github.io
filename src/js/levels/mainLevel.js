@@ -22,6 +22,7 @@ function setDummyInputs(context) {
 }
 
 function createAliens (context, invaderType) {
+    context.fireSpeed++;
     let xMultiply = 68, yMultiply =70;
     let scale = 0.35;
     let tweenX = 550;
@@ -30,7 +31,7 @@ function createAliens (context, invaderType) {
         xMultiply = 78; 
         //yMultiply =90;
         scale = 0.25;
-        tweenX = 500
+        tweenX = 400
     }
 
     if(invaderType === 2){
@@ -47,7 +48,7 @@ function createAliens (context, invaderType) {
         tweenX = 500
     }
 
-    for (var y = 0; y < 4; y++)
+    for (var y = 0; y < 5; y++)
     {
         for (var x = 0; x < 11; x++)
         {
@@ -67,9 +68,14 @@ function createAliens (context, invaderType) {
     context.aliens.x = 100;
     context.aliens.y = 50;
 
+    if(context._tween){
+        context._tween.stop();
+        context._tween = undefined;
+    }
     //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    var tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
+    context._tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000 /(context.fireSpeed/4), Phaser.Easing.Linear.None, true, 0, 1000, true);
+    console.log('tweenspeed', 4000 /(context.fireSpeed/4));
+    context._tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
 }
 
 function enemyFires (context) {
@@ -106,7 +112,8 @@ function enemyFires (context) {
         } else {
             context.game.physics.arcade.moveToObject(enemyBullet,context.playerTwo,120);
         }
-        let shootspeed = context.levelConfig.shootSpeed || 2000;
+        console.log(context.levelConfig.shootSpeed || (2000/ (context.fireSpeed/2)));
+        let shootspeed = context.levelConfig.shootSpeed || (2000/ (context.fireSpeed/2));
         context.firingTimer = context.game.time.now + shootspeed;
     }
 
@@ -201,48 +208,50 @@ function collisionHandler (bullet, alien) {
         //the "click to restart" handler
         //game.input.onTap.addOnce(restart,this);
         if(this.waveCounter ===2){
-            if(this.levelConfig.players === 2){
-                console.log('waves finished');
-                let player = 0;
-                let playerTwo = 0;
+            this.waveCounter = 0;
+            createAliens(this, 3);
+            // if(this.levelConfig.players === 2){
+            //     console.log('waves finished');
+            //     let player = 0;
+            //     let playerTwo = 0;
 
-                this.player.lives.forEachAlive(()=>{
-                    player =  player+1
-                })
-                this.playerTwo.lives.forEachAlive(()=>{
-                    playerTwo =  playerTwo+1
-                })
-                this.gameEnded = true;
-                this.game._sfx.bodenLoop.stop();
-                this.game._sfx.boden.stop();
-                console.log('starting bossLevel');
-                this.game.state.start('bossLevel', true, false, {
-                    players: this.levelConfig.players,
-                    playerScore: this.player.score,
-                    playerTwoScore: this.player.score,
-                    playerLives: player,
-                    playerTwoLives: playerTwo,
-                    endGame: this.levelConfig.endGame 
-                }, this.score);
-            } else {
-                console.log('wave levelConfig.endGame');
-                console.log(this.levelConfig.endGame);
+            //     this.player.lives.forEachAlive(()=>{
+            //         player =  player+1
+            //     })
+            //     this.playerTwo.lives.forEachAlive(()=>{
+            //         playerTwo =  playerTwo+1
+            //     })
+            //     this.gameEnded = true;
+            //     this.game._sfx.bodenLoop.stop();
+            //     this.game._sfx.boden.stop();
+            //     console.log('starting bossLevel');
+            //     this.game.state.start('bossLevel', true, false, {
+            //         players: this.levelConfig.players,
+            //         playerScore: this.player.score,
+            //         playerTwoScore: this.player.score,
+            //         playerLives: player,
+            //         playerTwoLives: playerTwo,
+            //         endGame: this.levelConfig.endGame 
+            //     }, this.score);
+            // } else {
+            //     console.log('wave levelConfig.endGame');
+            //     console.log(this.levelConfig.endGame);
 
-                let player = 0;
-                this.player.lives.forEachAlive(()=>{
-                    player =  player+1
-                })
-                this.gameEnded = true;
-                this.game._sfx.bodenLoop.stop();
-                this.game._sfx.boden.stop();
-                console.log('starting bossLevel');
-                this.game.state.start('bossLevel', true, false, {
-                    players: this.levelConfig.players,
-                    playerScore: this.player.score,
-                    playerLives: player,
-                    endGame: this.levelConfig.endGame 
-                }, this.score); 
-            }
+            //     let player = 0;
+            //     this.player.lives.forEachAlive(()=>{
+            //         player =  player+1
+            //     })
+            //     this.gameEnded = true;
+            //     this.game._sfx.bodenLoop.stop();
+            //     this.game._sfx.boden.stop();
+            //     console.log('starting bossLevel');
+            //     this.game.state.start('bossLevel', true, false, {
+            //         players: this.levelConfig.players,
+            //         playerScore: this.player.score,
+            //         playerLives: player,
+            //         endGame: this.levelConfig.endGame 
+            //     }, this.score); 
+            // }
         } else {
             console.log('starting next wave')
             this.waveCounter++;
@@ -252,9 +261,7 @@ function collisionHandler (bullet, alien) {
 }
 
 function enemyHitsPlayer (player,bullet) {
-    
     bullet.kill();
-
     let live = player.lives.getFirstAlive();
     if (live && !player.hasShield)
     {
@@ -361,7 +368,8 @@ export default class MainLevel {
         this.game.load.image('invader3', 'assets/img/bug3.svg');
         this.game.load.image('invader4', 'assets/img/bug4.svg');
         this.game.load.spritesheet('kaboom', 'assets/img/explode.png', 128, 128);
-        this.game.load.image('starfield', 'assets/img/starfield2.png');
+        //this.game.load.image('starfield', 'assets/img/starfield2.png');
+        this.game.load.image('starfield', 'assets/img/starfield.png');
         this.game.load.image('starfield2', 'assets/img/starfield3.png');
         this.game.load.image('invisible-wall', 'assets/img/invisible_wall.png');
     }
@@ -379,13 +387,15 @@ export default class MainLevel {
     create() {
         this.reset()
         this.game.stage.backgroundColor = "#000000";
+        this.fireSpeed = 0;
         
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
         //  The scrolling starfield background
+        //this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
+        //this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
-        this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
         setDummyInputs(this);
         //  The hero!
         this.player =  new Hero(this.game, {
@@ -400,7 +410,7 @@ export default class MainLevel {
             keys: this.game.input.keyboard.addKeys({
                 left: Phaser.KeyCode.LEFT,
                 right: Phaser.KeyCode.RIGHT,
-                fire: Phaser.KeyCode.CONTROL
+                fire: Phaser.KeyCode.SPACEBAR
             })
         });
         let addedScore = this.levelConfig.playerScore ||0;
@@ -454,7 +464,7 @@ export default class MainLevel {
         this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
         this.enemyBullets.createMultiple(30, 'enemyBullet');
         this.enemyBullets.setAll('anchor.x', 0.5);
-        this.enemyBullets.setAll('anchor.y', 1);
+        this.enemyBullets.setAll('anchor.y', 0.5);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
@@ -465,7 +475,7 @@ export default class MainLevel {
 
     update () {
         this.starfield.tilePosition.y += 1;
-        this.starfield2.tilePosition.y += 2;
+        //this.starfield2.tilePosition.y += 2;
 
         if (this.game.time.now > this.firingTimer)
         {
