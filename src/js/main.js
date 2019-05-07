@@ -2,43 +2,49 @@ import MainLevel from './levels/mainLevel';
 import BossLevel from './levels/bossLevel';
 import {ScoreController} from 'capmanhighscore';
 
+const pageURL = `http://${window.location.hostname}"${window.location.port}/index.html`;
+const wsURL = `ws://${window.location.hostname}:8081/`;
+let elems = {};
+let gameStatus = {status: 'form'};
+
+// Init sockets
+const connection = new WebSocket(wsURL);
+connection.onopen = () => console.log('WebSocket open');
+connection.onerror = error => console.log(`WebSocket error: ${error}`);
+connection.onmessage = message => {
+  console.log('WebSocket message:', message);
+  try {
+    let data = JSON.parse(message.data);
+    if (data.eventName === 'startGame') {
+      startGame();
+    } else if (data.eventName === 'resetGame') {
+      resetGame();
+    } else if (data.eventName === 'updatePlayerScore') {
+
+    } else {
+
+    }
+  } catch (err) {
+    console.log(err)
+  }
+};
+
+// Init key controls
 let keys = {};
 
 function keyHandle(event) {
-  const keyName = event.type;
-
   keys[event.key] = event.type === 'keydown';
   if (keys['1'] && keys['2']) {
-    const url = "http://" + window.location.hostname + ":" + window.location.port + '/index.html';
-    window.location = url;
+    resetGame();
   }
-};
+}
 
 document.addEventListener('keydown', keyHandle);
 document.addEventListener('keyup', keyHandle);
 
-let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
-
+// Init game
 let score = new ScoreController({name: 'aTestGame'});
-
-// const showScore = new ShowScore(
-//     {
-//         title: 'capman Crashing bugs',
-//         background: 'assets/img/Intro_Screen_background.png',
-//         logo: 'assets/img/CapmanLogo1.svg'
-//     },
-//     () =>{
-//         game.state.start('mainMenu', true, false);
-//     }
-// );
-//
-// const enterName = new EnterName(
-//     {
-//         title: 'capman Crashing bugs',
-//         background: 'assets/img/Intro_Screen_background.png',
-//         logo: 'assets/img/CapmanLogo1.svg'
-//     }
-// );
+let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
 
 let preloader = {
   preload: function () {
@@ -61,58 +67,18 @@ let preloader = {
       mainMenu: this.game.add.audio('sfx:spacetheme')
     };
     this.game._sfx.mainMenu.play();
-    // game.state.start('mainMenu', true, false);
   }
 };
-
-// const mainMenu = new GameMenu(
-//     {
-//         title: 'capman Crashing bugs',
-//         background: 'assets/img/Intro_Screen_background.png',
-//         logo: 'assets/img/CapmanLogo1.svg',
-//         buttons: [
-//             {
-//                 id: 'onePlayer',
-//                 text: '- start one player -'
-//             },
-//             {
-//                 id: 'twoPlayers',
-//                 text: '- start two player -'
-//             },
-//             {
-//                 id: 'highScores',
-//                 text: '- High scores -'
-//             },
-//             {
-//                 id: 'back',
-//                 text: '- Back to launcher -'
-//             }
-//         ]
-//     },
-//     (button) =>{
-//         console.log(button);
-//         let main1 = new MainLevel();
-//         let bossLevel = new BossLevel();
-//         game.state.add('bossLevel', bossLevel);
-//         game.state.add('main1', main1);
-//         let players = 1;
-//         if(button.id === 'back'){
-//             window.history.back();
-//         }
-//         else if(button.id === 'highScores'){
-//             game.state.start('showScore', true, false, score);
-//         } else{
-//             game._sfx.mainMenu.stop();
-//             if(button.id === 'twoPlayers') {
-//                 players = 2;
-//             }
-//             game.state.start('main1', true, false, {players: players}, score);
-//         }
-//
-//     }
-// );
+game.state.add('preloader', preloader)
+game.state.start('preloader', true, false);
 
 const startGame = () => {
+  if (gameStatus.status !== 'waiting') {
+    console.log('User not ready!');
+    return;
+  }
+  elems.capManGalaxy.style.display = 'block';
+  elems.formplaceholder.style.display = 'none';
   let main1 = new MainLevel();
   let bossLevel = new BossLevel();
   game.state.add('bossLevel', bossLevel);
@@ -122,37 +88,36 @@ const startGame = () => {
   game.state.start('main1', true, false, {players: players}, score);
 };
 
-// game.state.add('mainMenu', mainMenu);
-game.state.add('preloader', preloader)
-// game.state.add('showScore', showScore);
-// game.state.add('enterName', enterName)
-game.state.start('preloader', true, false);
-//game.state.start('enterName', true, false, score, 999999);
+const resetGame = () => {
+  console.log('resetGame');
+  window.location = pageURL;
+};
 
 window.addEventListener('load', function () {
+  elems.userform = document.getElementById('userform');
+  elems.userwaiting = document.getElementById('userwaiting');
+  elems.capManGalaxy = document.getElementById('capManGalaxy');
+  elems.formplaceholder = document.getElementById('formplaceholder');
+
   // hide the game
-  document.getElementById('capManGalaxy').style.display = 'none';
-  document.getElementById('userwaiting').style.display = 'none';
+  elems.capManGalaxy.style.display = 'none';
+  elems.userwaiting.style.display = 'none';
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.getElementsByClassName('needs-validation');
+  const forms = document.getElementsByClassName('needs-validation');
   // Loop over them and prevent submission
-  var validation = Array.prototype.filter.call(forms, function (form) {
+  const validation = Array.prototype.filter.call(forms, function (form) {
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       event.stopPropagation();
       if (form.checkValidity() === true) {
-
-        console.log('Validation OK! Start game.');
-        document.getElementById('userform').style.display = 'none';
-        document.getElementById('userwaiting').style.display = 'block';
-
-        // TODO FIXME Start game only after official start signal from server!!
-        window.addEventListener('click',function(){
-          document.getElementById('capManGalaxy').style.display = 'block';
-          document.getElementById('form-placeholder').style.display = 'none';
-          startGame();
-        })
+        let player = {nickName: userform.nickname.value, fullName: userform.fullname.value, email: userform.email.value};
+        console.log(JSON.stringify({eventName: "addNewPlayer", player}));
+        connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
+        gameStatus.status = 'waiting';
+        console.log('Validation OK! Wait for game start.');
+        elems.userform.style.display = 'none';
+        elems.userwaiting.style.display = 'block';
       }
       form.classList.add('was-validated');
     }, false);
