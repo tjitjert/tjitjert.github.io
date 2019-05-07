@@ -73,7 +73,7 @@ function createAliens (context, invaderType) {
         context._tween = undefined;
     }
     //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-    context._tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 4000 /(context.fireSpeed/4), Phaser.Easing.Linear.None, true, 0, 1000, true);
+    context._tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 1000 /(context.fireSpeed/4), Phaser.Easing.Linear.None, true, 0, 1000, true);
     console.log('tweenspeed', 4000 /(context.fireSpeed/4));
     context._tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
 }
@@ -139,35 +139,19 @@ function createBlindWalls(context){
 }
 
 function enemyHitsWall (){
-    if(this.levelConfig.players === 2){
-        if(this.score.isScoreMoreThenLast(this.player.score)){
-            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
-                if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
-                    this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
-                        this.game.state.start('showScore', true, false, this.score);
-                    });
-                } else {
-                    this.game.state.start('showScore', true, false, this.score);
-                }
-            });
-        } else if(this.score.isScoreMoreThenLast(this.playerTwo.score)){
-            this.game.state.start('enterName', true, false, this.score, this.playerTwo.score, ()=>{
-                this.game.state.start('showScore', true, false, this.score);
-            });
-        }
-        else {
-            this.game.state.start('showScore', true, false, this.score); 
-        }
-    } else {
-        if(this.score.isScoreMoreThenLast(this.player.score)){
-            this.game.state.start('enterName', true, false, this.score, this.player.score, ()=>{
-                this.game.state.start('showScore', true, false, this.score);
-            });
-        } else {
-            this.game.state.start('showScore', true, false, this.score); 
-        }
+    console.log('end game');
+    let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game Over ', { font: '84px Arial', fill: '#fff' });
+    gstateText.anchor.setTo(0.5, 0.5);
 
-    }    
+    let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
+    gScoreText.anchor.setTo(0.5, 0.5);
+    this.gameEnded = true;
+    this.game.paused = true;
+    this.aliens.callAll('kill', this);
+    this.player.kill();
+    this.enemyBullets.callAll('kill', this);
+
+ 
 
 }
 
@@ -291,6 +275,8 @@ function enemyHitsPlayer (player,bullet) {
         if(this.player.lives.countLiving() <1 && this.playerTwo.lives.countLiving() <1){
             let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
+            let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
+            gScoreText.anchor.setTo(0.5, 0.5);
             this.gameEnded = true;
             this.game._sfx.bodenLoop.stop();
             this.game._sfx.boden.stop();
@@ -322,8 +308,12 @@ function enemyHitsPlayer (player,bullet) {
         }
     } else {
         if(this.player.lives.countLiving() <1 ){
-            let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game OVer ', { font: '84px Arial', fill: '#fff' });
+            let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game Over ', { font: '84px Arial', fill: '#fff' });
             gstateText.anchor.setTo(0.5, 0.5);
+
+            let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
+            gScoreText.anchor.setTo(0.5, 0.5);
+
             this.gameEnded = true;
             this.game._sfx.bodenLoop.stop();
             this.game._sfx.boden.stop();
