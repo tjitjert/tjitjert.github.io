@@ -8,6 +8,9 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'docs')
   },
+  devServer: {
+    port: 8082
+  },
   resolve: {
     alias: {
       heros: path.resolve(__dirname, 'src/heros/')
