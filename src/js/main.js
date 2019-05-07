@@ -131,7 +131,7 @@ game.state.start('preloader', true, false);
 
 window.addEventListener('load', function () {
   // hide the game
-  document.getElementById('game').style.display = 'none';
+  document.getElementById('capManGalaxy').style.display = 'none';
   document.getElementById('userwaiting').style.display = 'none';
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -149,7 +149,7 @@ window.addEventListener('load', function () {
 
         // TODO FIXME Start game only after official start signal from server!!
         window.addEventListener('click',function(){
-          document.getElementById('game').style.display = 'block';
+          document.getElementById('capManGalaxy').style.display = 'block';
           document.getElementById('form-placeholder').style.display = 'none';
           startGame();
         })
