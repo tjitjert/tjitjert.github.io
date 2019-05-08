@@ -156,6 +156,7 @@ function enemyHitsWall (){
 }
 
 function collisionHandler (bullet, alien) {
+    //console.log(this.game._connection);
 
     //  When a bullet hits an alien we kill them both
     bullet.kill();
@@ -164,6 +165,14 @@ function collisionHandler (bullet, alien) {
     if(bullet.fromPlayer === 'one') {
         this.player.score += 20;
         this.player.scoreText.text = `Score: ${this.player.score}`;
+        var data = {
+            "eventName": "updatePlayerScore",
+            "player": {
+                "nickName": this.game._nickname,
+                "score": this.player.score
+            }
+        };
+        this.game._connection.send(JSON.stringify(data));
     } else if(bullet.fromPlayer === 'two') {
         this.playerTwo.score += 20;
         this.playerTwo.scoreText.text = `Score: ${this.playerTwo.score}`;

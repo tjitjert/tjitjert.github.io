@@ -6,11 +6,13 @@ const pageURL = `http://${window.location.hostname}"${window.location.port}/inde
 const wsURL = `ws://${window.location.hostname}:8081/`;
 let elems = {};
 let gameStatus = {status: 'form'};
+let nickname;
 
 // Init sockets
 const connection = new WebSocket(wsURL);
 connection.onopen = () => console.log('WebSocket open');
 connection.onerror = error => console.log(`WebSocket error: ${error}`);
+
 connection.onmessage = message => {
   console.log('WebSocket message:', message);
   try {
@@ -19,7 +21,7 @@ connection.onmessage = message => {
       startGame();
     } else if (data.eventName === 'resetGame') {
       resetGame();
-    } else if (data.eventName === 'updatePlayerScore') {
+    } else if (data.eventName === 'updatePlayerScore') { //This one wil be one that you send not needed to read
 
     } else {
 
@@ -73,6 +75,8 @@ game.state.add('preloader', preloader)
 game.state.start('preloader', true, false);
 
 const startGame = () => {
+  game._connection = connection;
+  game._nickname = nickname;
   if (gameStatus.status !== 'waiting') {
     console.log('User not ready!');
     return;
@@ -113,6 +117,7 @@ window.addEventListener('load', function () {
       if (form.checkValidity() === true) {
         let player = {nickName: userform.nickname.value, fullName: userform.fullname.value, email: userform.email.value};
         console.log(JSON.stringify({eventName: "addNewPlayer", player}));
+        nickname = userform.nickname.value;
         connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
         gameStatus.status = 'waiting';
         console.log('Validation OK! Wait for game start.');
