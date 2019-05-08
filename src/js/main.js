@@ -23,8 +23,8 @@ connection.onmessage = message => {
       resetGame();
     } else if (data.eventName === 'updatePlayerScore') { //This one wil be one that you send not needed to read
 
-    } else {
-
+    } else if (data.eventName === 'addNewPlayer') {
+      nickname = data.nickname;
     }
   } catch (err) {
     console.log(err)
