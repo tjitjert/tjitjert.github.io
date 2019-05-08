@@ -21,7 +21,7 @@ export default class Hero extends Phaser.Sprite {
         super(game, settings.spawnPosition.x, settings.spawnPosition.y, settings.ship);
         this.settings = settings
         this.score = 0;
-        this.scale.setTo(0.45, 0.45);
+        this.scale.setTo(0.30, 0.30);
         this.anchor.setTo(0.5, 0.5);
         this.hasShield = false;
         
