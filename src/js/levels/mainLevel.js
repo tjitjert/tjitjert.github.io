@@ -145,6 +145,15 @@ function enemyHitsWall (){
 
     let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
     gScoreText.anchor.setTo(0.5, 0.5);
+
+    var data = {
+        "eventName": "playerGameOver",
+        "player": {
+            "nickName": this.game._nickname
+        }
+    };
+    this.game._connection.send(JSON.stringify(data));
+
     this.gameEnded = true;
     this.game.paused = true;
     this.aliens.callAll('kill', this);
@@ -287,6 +296,8 @@ function enemyHitsPlayer (player,bullet) {
             gstateText.anchor.setTo(0.5, 0.5);
             let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
             gScoreText.anchor.setTo(0.5, 0.5);
+            
+            
             this.gameEnded = true;
             this.game._sfx.bodenLoop.stop();
             this.game._sfx.boden.stop();
@@ -324,7 +335,16 @@ function enemyHitsPlayer (player,bullet) {
             let gScoreText = this.game.add.text(this.game.world.centerX,this.game.world.centerY + 100,'Your Score: '+ this.player.score, { font: '84px Arial', fill: '#fff' });
             gScoreText.anchor.setTo(0.5, 0.5);
 
+            var data = {
+                "eventName": "playerGameOver",
+                "player": {
+                    "nickName": this.game._nickname
+                }
+            };
+            this.game._connection.send(JSON.stringify(data));
+
             this.gameEnded = true;
+            this.game.paused = true;
             this.game._sfx.bodenLoop.stop();
             this.game._sfx.boden.stop();
             
