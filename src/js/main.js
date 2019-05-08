@@ -46,7 +46,7 @@ document.addEventListener('keyup', keyHandle);
 
 // Init game
 let score = new ScoreController({name: 'aTestGame'});
-let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
+let game = new Phaser.Game(1152, 648, Phaser.AUTO, 'capManGalaxy');
 
 let preloader = {
   preload: function () {

@@ -24,33 +24,33 @@ function setDummyInputs(context) {
 function createAliens (context, invaderType) {
     context.fireSpeed++;
     let xMultiply = 68, yMultiply =70;
-    let scale = 0.35;
+    let scale = 0.22;
     let tweenX = 550;
 
     if(invaderType === 1){
         xMultiply = 78; 
         //yMultiply =90;
-        scale = 0.25;
+        scale = 0.12;
         tweenX = 400
     }
 
     if(invaderType === 2){
         xMultiply = 78; 
         //yMultiply =90;
-        scale = 0.25;
+        scale = 0.12;
         tweenX = 500
     }
 
     if(invaderType === 3){
         xMultiply = 85; 
         //yMultiply =90;
-        scale = 0.35;
+        scale = 0.22;
         tweenX = 500
     }
 
-    for (var y = 0; y < 5; y++)
+    for (var y = 0; y < 4; y++)
     {
-        for (var x = 0; x < 11; x++)
+        for (var x = 0; x < 8; x++)
         {
             var alien = context.aliens.create(x * xMultiply, y * yMultiply, 'invader'+invaderType);
             alien.scale.setTo(scale, scale);
@@ -254,6 +254,7 @@ function collisionHandler (bullet, alien) {
 }
 
 function enemyHitsPlayer (player,bullet) {
+
     bullet.kill();
     let live = player.lives.getFirstAlive();
     if (live && !player.hasShield)
@@ -376,7 +377,6 @@ export default class MainLevel {
         this.game.renderer.renderSession.roundPixels = true;
         this.levelConfig = config;
         this.score = score;
-        console.log(this.levelConfig, this.score);
     }
 
     reset() {
@@ -415,27 +415,6 @@ export default class MainLevel {
         let addedScore = this.levelConfig.playerScore ||0;
         this.player.score = this.player.score + addedScore;
         this.game.add.existing(this.player);
-        if(this.levelConfig.players === 2) {
-            this.playerTwo =  new Hero(this.game, {
-                ship: 'ship2',
-                player: 'two',
-                //lives: 3,
-                lives: this.levelConfig.playerLives || 3,
-                positionHUD: 'right',
-                spawnPosition: {
-                    x: 1040,
-                    y: 900
-                },
-                keys: this.game.input.keyboard.addKeys({
-                    left: Phaser.KeyCode.D,
-                    right: Phaser.KeyCode.G,
-                    fire: Phaser.KeyCode.A
-                })
-            });
-            let addedScorepTwo = this.levelConfig.playerTwoScore || 0
-            this.playerTwo.score = this.playerTwo.score + addedScorepTwo;
-            this.game.add.existing(this.playerTwo);
-        }
 
         //  The baddies!
         this.aliens = this.game.add.group();
@@ -455,7 +434,7 @@ export default class MainLevel {
             }
             
         });
-        this.game._sfx.boden.play();
+        //this.game._sfx.boden.play();
 
         // The enemy's bullets
         this.enemyBullets = this.game.add.group();
@@ -473,7 +452,7 @@ export default class MainLevel {
     }
 
     update () {
-        this.starfield.tilePosition.y += 1;
+        //this.starfield.tilePosition.y += 1;
         //this.starfield2.tilePosition.y += 2;
 
         if (this.game.time.now > this.firingTimer)
@@ -492,16 +471,5 @@ export default class MainLevel {
             this.player.shieldTimer = this.game.time.now + 2000;
         }
 
-        if(this.levelConfig.players === 2) {
-            this.game.physics.arcade.overlap(this.enemyBullets, this.playerTwo, enemyHitsPlayer, null, this);
-            this.game.physics.arcade.overlap(this.playerTwo.bullets, this.aliens, collisionHandler, null, this);
-            if(this.playerTwo.reviveAble && this.playerTwo.revivePenalty < this.game.time.now){
-                this.playerTwo.revive();
-                this.playerTwo.tint = 500 * 0xffffff;
-                this.playerTwo.reviveAble = false;
-                this.playerTwo.hasShield = true;
-                this.playerTwo.shieldTimer = this.game.time.now + 2000;
-            }
-        }
     }
 }
