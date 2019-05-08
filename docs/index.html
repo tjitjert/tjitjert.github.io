@@ -2,6 +2,7 @@
 <head>
     <title>Capman Galaxy</title>
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="/assets/img/Jet-top.ico"/>
 
     <script src="phaser.min.js"></script>
     <script src="bundle.js"></script>
@@ -9,11 +10,11 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-<div id="form-placeholder">
+<div id="formplaceholder">
     <div class="row title mb-5"></div>
     <div class="row justify-content-md-center">
-        <div id="userform" class="col-md-5 card">
-            <form class="card-body needs-validation">
+        <form id="userform" class="col-md-5 card needs-validation">
+            <div class="card-body ">
                 <h4 class="card-title mb-2">Please enter your details below</h4>
                 <div class="form-group">
                     <label for="nickname">Nickname</label>
@@ -34,8 +35,8 @@
                     <!--                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block mt-5">Ready!</button>
-            </form>
-        </div>
+            </div>
+        </form>
 
         <div id="userwaiting" class="col-md-5 card">
             <div class="card-body">
@@ -45,5 +46,5 @@
         </div>
     </div>
 </div>
-<div id="game"></div>
+<div id="capManGalaxy"></div>
 </body>

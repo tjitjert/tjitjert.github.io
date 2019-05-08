@@ -1,0 +1,31 @@
+canvas {
+    margin: 0 auto;
+}
+
+body {
+    background-color: #000;
+    margin: 0 auto;
+}
+
+#game {
+    margin: 0 auto;
+}
+
+canvas {
+    margin: 0 auto;
+}
+
+#formplaceholder {
+    height: 100vh;
+    background-image: url('assets/img/Intro_Screen_background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#formplaceholder .title {
+    height: 200px;
+    background-image: url('assets/img/CapmanLogo1.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
