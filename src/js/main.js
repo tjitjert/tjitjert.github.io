@@ -21,10 +21,12 @@ connection.onmessage = message => {
       startGame();
     } else if (data.eventName === 'resetGame') {
       resetGame();
-    } else if (data.eventName === 'updatePlayerScore') { //This one wil be one that you send not needed to read
-
+    } else if (data.eventName === 'updatePlayerScore') {
+      //This one wil be one that you send not needed to read
     } else if (data.eventName === 'addNewPlayer') {
       nickname = data.nickname;
+    } else if (data.eventName === 'playerGameOver') {
+      gameOver(data.player.score);
     }
   } catch (err) {
     console.log(err)
@@ -83,6 +85,7 @@ const startGame = () => {
   }
   elems.capManGalaxy.classList.remove("hide");
   elems.formplaceholder.classList.add("hide");
+  elems.userwaiting.classList.add("hide");
   let main1 = new MainLevel();
   let bossLevel = new BossLevel();
   game.state.add('bossLevel', bossLevel);
@@ -90,6 +93,14 @@ const startGame = () => {
   let players = 1;
   game._sfx.mainMenu.stop();
   game.state.start('main1', true, false, {players: players}, score);
+};
+
+const gameOver = (score) => {
+  console.log('gameOver');
+  elems.score.innerText = score;
+  elems.capManGalaxy.classList.add("hide");
+  elems.formplaceholder.classList.remove("hide");
+  elems.gameover.classList.remove("hide");
 };
 
 const resetGame = () => {
@@ -100,6 +111,8 @@ const resetGame = () => {
 window.addEventListener('load', function () {
   elems.userform = document.getElementById('userform');
   elems.userwaiting = document.getElementById('userwaiting');
+  elems.gameover = document.getElementById('gameover');
+  elems.score = document.getElementById('score');
   elems.capManGalaxy = document.getElementById('capManGalaxy');
   elems.formplaceholder = document.getElementById('formplaceholder');
 
@@ -111,7 +124,11 @@ window.addEventListener('load', function () {
       event.preventDefault();
       event.stopPropagation();
       if (form.checkValidity() === true) {
-        let player = {nickName: userform.nickname.value, fullName: userform.fullname.value, email: userform.email.value};
+        let player = {
+          nickName: userform.nickname.value,
+          fullName: userform.fullname.value,
+          email: userform.email.value
+        };
         console.log(JSON.stringify({eventName: "addNewPlayer", player}));
         nickname = userform.nickname.value;
         connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
