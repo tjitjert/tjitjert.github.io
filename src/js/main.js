@@ -81,8 +81,8 @@ const startGame = () => {
     console.log('User not ready!');
     return;
   }
-  elems.capManGalaxy.style.display = 'block';
-  elems.formplaceholder.style.display = 'none';
+  elems.capManGalaxy.classList.remove("hide");
+  elems.formplaceholder.classList.add("hide");
   let main1 = new MainLevel();
   let bossLevel = new BossLevel();
   game.state.add('bossLevel', bossLevel);
@@ -103,10 +103,6 @@ window.addEventListener('load', function () {
   elems.capManGalaxy = document.getElementById('capManGalaxy');
   elems.formplaceholder = document.getElementById('formplaceholder');
 
-  // hide the game
-  elems.capManGalaxy.style.display = 'none';
-  elems.userwaiting.style.display = 'none';
-
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
   const forms = document.getElementsByClassName('needs-validation');
   // Loop over them and prevent submission
@@ -121,8 +117,8 @@ window.addEventListener('load', function () {
         connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
         gameStatus.status = 'waiting';
         console.log('Validation OK! Wait for game start.');
-        elems.userform.style.display = 'none';
-        elems.userwaiting.style.display = 'block';
+        elems.userform.classList.add("hide");
+        elems.userwaiting.classList.remove("hide");
       }
       form.classList.add('was-validated');
     }, false);
