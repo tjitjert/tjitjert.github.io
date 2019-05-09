@@ -26,7 +26,7 @@ connection.onmessage = message => {
     } else if (data.eventName === 'addNewPlayer') {
       nickname = data.nickname;
     } else if (data.eventName === 'playerGameOver') {
-      gameOver(data.player.score);
+      gameOver(data.player);
     }
   } catch (err) {
     console.log(err)
@@ -95,9 +95,12 @@ const startGame = () => {
   game.state.start('main1', true, false, {players: players}, score);
 };
 
-const gameOver = (score) => {
+const gameOver = (player) => {
   console.log('gameOver');
-  elems.score.innerText = score;
+  if (player) {
+    elems.score.innerText = player.score;
+    elems.name.innerText = player.nickName;
+  }
   elems.capManGalaxy.classList.add("hide");
   elems.formplaceholder.classList.remove("hide");
   elems.gameover.classList.remove("hide");
@@ -112,6 +115,7 @@ window.addEventListener('load', function () {
   elems.userform = document.getElementById('userform');
   elems.userwaiting = document.getElementById('userwaiting');
   elems.gameover = document.getElementById('gameover');
+  elems.name = document.getElementById('name');
   elems.score = document.getElementById('score');
   elems.capManGalaxy = document.getElementById('capManGalaxy');
   elems.formplaceholder = document.getElementById('formplaceholder');
