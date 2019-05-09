@@ -2,7 +2,7 @@ import MainLevel from './levels/mainLevel';
 import BossLevel from './levels/bossLevel';
 import {ScoreController} from 'capmanhighscore';
 
-const pageURL = `http://${window.location.hostname}:${window.location.port}/index.html`;
+const pageURL = `http://${window.location.hostname}:${window.location.port}/game`;
 const wsURL = `ws://${window.location.hostname}:8081/`;
 let elems = {};
 let gameStatus = {status: 'form'};
