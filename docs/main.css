@@ -17,6 +17,7 @@ canvas {
 
 #formplaceholder {
     height: 100vh;
+    overflow-x: hidden;
     background-image: url('assets/img/Intro_Screen_background.png');
     background-position: center;
     background-repeat: no-repeat;
