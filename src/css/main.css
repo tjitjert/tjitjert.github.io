@@ -25,8 +25,9 @@ canvas {
 }
 
 #formplaceholder .title {
-    height: 200px;
-    background-image: url('assets/img/CapmanLogo1.svg');
+    height: 284px;
+    background-size: 513px;
+    background-image: url('assets/img/CCGLogo2.png');
     background-position: center;
     background-repeat: no-repeat;
 }
