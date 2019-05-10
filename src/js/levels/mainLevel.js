@@ -338,7 +338,8 @@ function enemyHitsPlayer (player,bullet) {
             var data = {
                 "eventName": "playerGameOver",
                 "player": {
-                    "nickName": this.game._nickname
+                    "nickName": this.game._nickname,
+                    "score": this.player.score
                 }
             };
             this.game._connection.send(JSON.stringify(data));

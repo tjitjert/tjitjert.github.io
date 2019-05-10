@@ -38,13 +38,19 @@
             </div>
         </form>
 
-        <div id="userwaiting" class="col-md-5 card">
+        <div id="userwaiting" class="col-md-5 card hide">
             <div class="card-body">
                 <h4 class="card-title mb-2">Waiting for the game to start...</h4>
-
+            </div>
+        </div>
+        <div id="gameover" class="col-md-5 card hide">
+            <div class="card-body">
+                <h4 class="card-title">Game Over <span id="name"></span></h4>
+                <h2 class="py-4">Your high score is <span id="score"></span></h2>
+                <p class="mt-5">Waiting for other players to finish...</p>
             </div>
         </div>
     </div>
 </div>
-<div id="capManGalaxy"></div>
+<div id="capManGalaxy" class="hide"></div>
 </body>
