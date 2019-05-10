@@ -98,7 +98,7 @@ const startGame = () => {
 const gameOver = (player) => {
   console.log('gameOver');
   if (player) {
-    elems.score.innerText = player.score;
+    elems.score.innerText = game._playerScore;
     elems.name.innerText = player.nickName;
   }
   elems.capManGalaxy.classList.add("hide");

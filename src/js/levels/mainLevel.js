@@ -181,6 +181,7 @@ function collisionHandler (bullet, alien) {
                 "score": this.player.score
             }
         };
+        this.game._playerScore = this.player.score;
         this.game._connection.send(JSON.stringify(data));
     } else if(bullet.fromPlayer === 'two') {
         this.playerTwo.score += 20;
