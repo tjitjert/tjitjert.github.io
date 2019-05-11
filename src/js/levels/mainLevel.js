@@ -1,5 +1,5 @@
 import Hero from '../characters/hero';
-
+var bonusScore;
 function setDummyInputs(context) {
     var inputOne = {
         "up": context.game.input.keyboard.addKey(Phaser.Keyboard.UP).isDown,
@@ -21,11 +21,17 @@ function setDummyInputs(context) {
     };
 }
 
+
 function createAliens (context, invaderType) {
     context.fireSpeed++;
     let xMultiply = 68, yMultiply =70;
     let scale = 0.22;
     let tweenX = 550;
+    bonusScore = 350;
+
+    setTimeout(e=>bonusScore = bonusScore -100, 30000)
+    setTimeout(e=>bonusScore = bonusScore -100, 20000)
+    setTimeout(e=>bonusScore = bonusScore -100, 10000)
 
     if(invaderType === 1){
         xMultiply = 78; 
@@ -74,7 +80,6 @@ function createAliens (context, invaderType) {
     }
     //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
     context._tween = context.game.add.tween(context.aliens).to( { x: tweenX }, 1000 /(context.fireSpeed/4), Phaser.Easing.Linear.None, true, 0, 1000, true);
-    console.log('tweenspeed', 4000 /(context.fireSpeed/4));
     context._tween.onRepeat.add(()=>{context.aliens.y += 30;}, this);
 }
 
@@ -196,6 +201,8 @@ function collisionHandler (bullet, alien) {
     explosion.play('kaboom', 30, false, true);
 
     if (this.aliens.countLiving() == 0) {
+        this.player.score +=bonusScore;
+        console.log('bonusScore', bonusScore);
         this.player.bullets.callAll('kill');
         if(this.levelConfig.players === 2){
             this.playerTwo.bullets.callAll('kill');
