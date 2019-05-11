@@ -21,16 +21,14 @@ connection.onmessage = message => {
   console.log('WebSocket message:', message);
   try {
     let data = JSON.parse(message.data);
-    // if multiplayer is false start game will break the current running game
     if (data.eventName === 'startGame' && multiplayerMode) {
-      startGame();
-      // if multiplayer game is false ignore rset game signals else games get rebooted when players are playing
+      startCountDown();
     } else if (data.eventName === 'resetGame' && multiplayerMode) {
       resetGame();
     } else if (data.eventName === 'updatePlayerScore') {
       //This one wil be one that you send not needed to read
     } else if (data.eventName === 'addNewPlayer') {
-      nickname = data.nickname;
+      updateName(data);
     } else if (data.eventName === 'playerGameOver') {
       gameOver(data.player);
     }
@@ -82,6 +80,18 @@ let preloader = {
 game.state.add('preloader', preloader)
 game.state.start('preloader', true, false);
 
+const startCountDown = () => {
+  let secs = 3;
+  let interval = setInterval(()=>{
+    elems.countdown.innerText = secs;
+    if (secs <= 0) {
+      clearInterval(interval);
+      startGame();
+    }
+    secs -= 1;
+  }, 1000);
+};
+
 const startGame = () => {
   game._connection = connection;
   game._nickname = nickname;
@@ -89,9 +99,9 @@ const startGame = () => {
     console.log('User not ready!');
     return;
   }
-  elems.capManGalaxy.classList.remove("hide");
-  elems.formplaceholder.classList.add("hide");
-  elems.userwaiting.classList.add("hide");
+  elems.capManGalaxy.classList.remove("d-none");
+  elems.formplaceholder.classList.add("d-none");
+  elems.userwaiting.classList.add("d-none");
   let main1 = new MainLevel();
   let bossLevel = new BossLevel();
   game.state.add('bossLevel', bossLevel);
@@ -104,16 +114,15 @@ const startGame = () => {
 const gameOver = (player) => {
   console.log('gameOver');
   if (player) {
-    elems.score.innerText = game._playerScore;
+    elems.score.innerText = game._playerScore ? game._playerScore : 0;
     elems.name.innerText = player.nickName;
   }
-  elems.capManGalaxy.classList.add("hide");
-  elems.formplaceholder.classList.remove("hide");
-  elems.gameover.classList.remove("hide");
+  elems.capManGalaxy.classList.add("d-none");
+  elems.formplaceholder.classList.remove("d-none");
+  elems.gameover.classList.remove("d-none");
   if(!multiplayerMode){
     setTimeout(e=> resetGame(), 15000)
   }
-  
 };
 
 const resetGame = () => {
@@ -121,13 +130,21 @@ const resetGame = () => {
   window.location = pageURL;
 };
 
+const updateName = (data) => {
+  game._nickname = nickname;
+  nickname = data.nickname;
+  data.b ? elems.overlayb.classList.remove("d-none") : elems.overlayb.classList.add("d-none");
+};
+
 window.addEventListener('load', function () {
   elems.userform = document.getElementById('userform');
   elems.userwaiting = document.getElementById('userwaiting');
+  elems.countdown = document.getElementById('countdown');
   elems.gameover = document.getElementById('gameover');
   elems.name = document.getElementById('name');
   elems.score = document.getElementById('score');
   elems.capManGalaxy = document.getElementById('capManGalaxy');
+  elems.overlayb = document.getElementById('overlayb');
   elems.formplaceholder = document.getElementById('formplaceholder');
 
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -148,9 +165,9 @@ window.addEventListener('load', function () {
         connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
         gameStatus.status = 'waiting';
         console.log('Validation OK! Wait for game start.');
-        elems.userform.classList.add("hide");
+        elems.userform.classList.add("d-none");
         if(multiplayerMode){
-          elems.userwaiting.classList.remove("hide");
+          elems.userwaiting.classList.remove("d-none");
         } else {
           startGame();
         }
