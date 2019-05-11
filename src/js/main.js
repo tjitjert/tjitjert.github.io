@@ -4,6 +4,10 @@ import {ScoreController} from 'capmanhighscore';
 
 const pageURL = `http://${window.location.hostname}:${window.location.port}/game`;
 const wsURL = `ws://${window.location.hostname}:8081/`;
+const url = new URL(window.location.href);
+let multiplayerMode = url.searchParams.get('multiplayerMode') || true ;
+multiplayerMode = JSON.parse(multiplayerMode) //making it an actual boolean
+
 let elems = {};
 let gameStatus = {status: 'form'};
 let nickname;
@@ -17,9 +21,11 @@ connection.onmessage = message => {
   console.log('WebSocket message:', message);
   try {
     let data = JSON.parse(message.data);
-    if (data.eventName === 'startGame') {
+    // if multiplayer is false start game will break the current running game
+    if (data.eventName === 'startGame' && multiplayerMode) {
       startGame();
-    } else if (data.eventName === 'resetGame') {
+      // if multiplayer game is false ignore rset game signals else games get rebooted when players are playing
+    } else if (data.eventName === 'resetGame' && multiplayerMode) {
       resetGame();
     } else if (data.eventName === 'updatePlayerScore') {
       //This one wil be one that you send not needed to read
@@ -104,6 +110,10 @@ const gameOver = (player) => {
   elems.capManGalaxy.classList.add("hide");
   elems.formplaceholder.classList.remove("hide");
   elems.gameover.classList.remove("hide");
+  if(!multiplayerMode){
+    setTimeout(e=> resetGame(), 15000)
+  }
+  
 };
 
 const resetGame = () => {
@@ -139,7 +149,12 @@ window.addEventListener('load', function () {
         gameStatus.status = 'waiting';
         console.log('Validation OK! Wait for game start.');
         elems.userform.classList.add("hide");
-        elems.userwaiting.classList.remove("hide");
+        if(multiplayerMode){
+          elems.userwaiting.classList.remove("hide");
+        } else {
+          startGame();
+        }
+        
       }
       form.classList.add('was-validated');
     }, false);
