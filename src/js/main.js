@@ -124,6 +124,7 @@ const resetGame = () => {
 };
 
 const updateName = (data) => {
+  game._nickname = nickname;
   nickname = data.nickname;
   data.b ? elems.overlayb.classList.remove("d-none") : elems.overlayb.classList.add("d-none");
 };
