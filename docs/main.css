@@ -24,6 +24,12 @@ canvas {
     margin: 0 auto;
 }
 
+#adminMenu {
+    position: absolute;
+    top:0;
+    left:0;
+}
+
 #formplaceholder {
     height: 100vh;
     overflow-x: hidden;

@@ -73,16 +73,18 @@ export default class Hero extends Phaser.Sprite {
                 this.hasShield = false;
                 this.tint = 0xffffff;
             }
+
+            this.nicknameText.text = this.game._nickname;
         }
     }
     createLives(amount = 0 ){
         if(this.settings.positionHUD === 'left'){
             this.scoreText = this.game.add.text(10, 10, `Score: ${this.score}`, { font: '34px Arial', fill: '#fff' });
-            this.scoreText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
+            this.nicknameText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
             this.statusText = this.game.add.text(10, 60, ``, { font: '34px Arial', fill: '#fff' });
         }else{
             this.scoreText = this.game.add.text(this.game.world.width - 230, 10, `Score: ${this.score}`, { font: '34px Arial', fill: '#fff' });
-            this.scoreText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
+            this.nicknameText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
             this.statusText = this.game.add.text(this.game.world.width - 230, 60, ``, { font: '34px Arial', fill: '#fff' });
         }
 

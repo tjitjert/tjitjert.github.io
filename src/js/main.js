@@ -13,29 +13,36 @@ let gameStatus = {status: 'form'};
 let nickname;
 
 // Init sockets
-const connection = new WebSocket(wsURL);
-connection.onopen = () => console.log('WebSocket open');
-connection.onerror = error => console.log(`WebSocket error: ${error}`);
-
-connection.onmessage = message => {
-  console.log('WebSocket message:', message);
-  try {
-    let data = JSON.parse(message.data);
-    if (data.eventName === 'startGame' && multiplayerMode) {
-      startCountDown();
-    } else if (data.eventName === 'resetGame' && multiplayerMode) {
-      resetGame();
-    } else if (data.eventName === 'updatePlayerScore') {
-      //This one wil be one that you send not needed to read
-    } else if (data.eventName === 'addNewPlayer') {
-      updateName(data);
-    } else if (data.eventName === 'playerGameOver') {
-      gameOver(data.player);
-    }
-  } catch (err) {
-    console.log(err)
+let connection;
+const initSockets = () => {
+  if (connection && connection.readyState === 1) {
+    connection.close();
   }
+  connection = new WebSocket(wsURL);
+  connection.onopen = () => console.log('WebSocket open');
+  connection.onclose = () => console.log('WebSocket close');
+  connection.onerror = error => console.log(`WebSocket error: ${error}`);
+  connection.onmessage = message => {
+    console.log('WebSocket message:', message);
+    try {
+      let data = JSON.parse(message.data);
+      if (data.eventName === 'startGame' && multiplayerMode) {
+        startCountDown();
+      } else if (data.eventName === 'resetGame' && multiplayerMode) {
+        resetGame();
+      } else if (data.eventName === 'updatePlayerScore') {
+        //This one wil be one that you send not needed to read
+      } else if (data.eventName === 'addNewPlayer') {
+        updateName(data);
+      } else if (data.eventName === 'playerGameOver') {
+        gameOver(data.player);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  };
 };
+initSockets();
 
 // Init key controls
 let keys = {};
@@ -44,6 +51,9 @@ function keyHandle(event) {
   keys[event.key] = event.type === 'keydown';
   if (keys['1'] && keys['2']) {
     resetGame();
+  }
+  if (event.type === 'keydown' && event.code === 'F9') {
+    document.getElementById('adminMenu').classList.toggle('d-none');
   }
 }
 
@@ -82,7 +92,7 @@ game.state.start('preloader', true, false);
 
 const startCountDown = () => {
   let secs = 3;
-  let interval = setInterval(()=>{
+  let interval = setInterval(() => {
     elems.countdown.innerText = secs;
     if (secs <= 0) {
       clearInterval(interval);
@@ -131,9 +141,9 @@ const resetGame = () => {
 };
 
 const updateName = (data) => {
-  game._nickname = nickname;
   nickname = data.nickname;
-  data.b ? elems.overlayb.classList.remove("d-none") : elems.overlayb.classList.add("d-none");
+  game._nickname = nickname;
+  data.b && elems.overlayb.classList.toggle("d-none");
 };
 
 window.addEventListener('load', function () {
@@ -147,6 +157,9 @@ window.addEventListener('load', function () {
   elems.overlayb = document.getElementById('overlayb');
   elems.formplaceholder = document.getElementById('formplaceholder');
 
+  document.getElementById('resetconnection').addEventListener('click', initSockets);
+  document.getElementById('startgame').addEventListener('click', startGame);
+
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
   const forms = document.getElementsByClassName('needs-validation');
   // Loop over them and prevent submission
@@ -155,23 +168,21 @@ window.addEventListener('load', function () {
       event.preventDefault();
       event.stopPropagation();
       if (form.checkValidity() === true) {
+        nickname = userform.nickname.value;
         let player = {
-          nickName: userform.nickname.value,
+          nickName: nickname,
           fullName: userform.fullname.value,
           email: userform.email.value
         };
-        console.log(JSON.stringify({eventName: "addNewPlayer", player}));
-        nickname = userform.nickname.value;
         connection.send(JSON.stringify({eventName: "addNewPlayer", player}));
         gameStatus.status = 'waiting';
-        console.log('Validation OK! Wait for game start.');
         elems.userform.classList.add("d-none");
         if(multiplayerMode){
           elems.userwaiting.classList.remove("d-none");
         } else {
           startGame();
         }
-        
+
       }
       form.classList.add('was-validated');
     }, false);
