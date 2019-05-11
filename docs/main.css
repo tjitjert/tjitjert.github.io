@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "8bit";
+    src: url("assets/fonts/8-BIT-WONDER.TTF");
+}
+
+.bit {
+    font-family: '8bit';
+}
+
 canvas {
     margin: 0 auto;
 }
@@ -13,10 +22,6 @@ body {
 
 canvas {
     margin: 0 auto;
-}
-
-.hide {
-    display: none;
 }
 
 #formplaceholder {
