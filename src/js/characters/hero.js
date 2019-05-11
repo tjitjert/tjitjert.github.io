@@ -78,12 +78,13 @@ export default class Hero extends Phaser.Sprite {
     createLives(amount = 0 ){
         if(this.settings.positionHUD === 'left'){
             this.scoreText = this.game.add.text(10, 10, `Score: ${this.score}`, { font: '34px Arial', fill: '#fff' });
+            this.scoreText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
             this.statusText = this.game.add.text(10, 60, ``, { font: '34px Arial', fill: '#fff' });
         }else{
             this.scoreText = this.game.add.text(this.game.world.width - 230, 10, `Score: ${this.score}`, { font: '34px Arial', fill: '#fff' });
+            this.scoreText = this.game.add.text(this.game.world.width/2, 10, `${this.game._nickname}`, { font: '34px Arial', fill: '#fff' });
             this.statusText = this.game.add.text(this.game.world.width - 230, 60, ``, { font: '34px Arial', fill: '#fff' });
         }
-        
 
         for (var i = 0; i < amount; i++) 
         {
