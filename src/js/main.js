@@ -23,7 +23,7 @@ const initSockets = () => {
   connection.onclose = () => console.log('WebSocket close');
   connection.onerror = error => console.log(`WebSocket error: ${error}`);
   connection.onmessage = message => {
-    console.log('WebSocket message:', message);
+    
     try {
       let data = JSON.parse(message.data);
       if (data.eventName === 'startGame' && multiplayerMode) {
@@ -108,7 +108,6 @@ const startGame = () => {
   game._nickname = nickname;
   game._multiplayerMode = multiplayerMode;
   if (gameStatus.status !== 'waiting') {
-    console.log('User not ready!');
     return;
   }
   elems.capManGalaxy.classList.remove("d-none");
@@ -124,7 +123,6 @@ const startGame = () => {
 };
 
 const gameOver = (player) => {
-  console.log('gameOver');
   if (player) {
     elems.score.innerText = game._playerScore ? game._playerScore : 0;
     elems.name.innerText = player.nickName;
@@ -138,7 +136,7 @@ const gameOver = (player) => {
 };
 
 const resetGame = () => {
-  console.log('resetGame');
+ 
   window.location = pageURL;
 };
 

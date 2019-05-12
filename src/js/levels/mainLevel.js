@@ -117,7 +117,6 @@ function enemyFires (context) {
         } else {
             context.game.physics.arcade.moveToObject(enemyBullet,context.playerTwo,120);
         }
-        console.log(context.levelConfig.shootSpeed || (2000/ (context.fireSpeed/2)));
         let shootspeed = context.levelConfig.shootSpeed || (2000/ (context.fireSpeed/2));
         context.firingTimer = context.game.time.now + shootspeed;
     }
@@ -144,7 +143,6 @@ function createBlindWalls(context){
 }
 
 function enemyHitsWall (){
-    console.log('end game');
     let gstateText = this.game.add.text(this.game.world.centerX,this.game.world.centerY,'Game Over ', { font: '84px Arial', fill: '#fff' });
     gstateText.anchor.setTo(0.5, 0.5);
 
@@ -202,7 +200,6 @@ function collisionHandler (bullet, alien) {
 
     if (this.aliens.countLiving() == 0) {
         this.player.score +=bonusScore;
-        console.log('bonusScore', bonusScore);
         this.player.bullets.callAll('kill');
         if(this.levelConfig.players === 2){
             this.playerTwo.bullets.callAll('kill');
@@ -263,7 +260,6 @@ function collisionHandler (bullet, alien) {
             //     }, this.score); 
             // }
         } else {
-            console.log('starting next wave')
             this.waveCounter++;
             createAliens(this, this.waveCounter);
         }
@@ -420,7 +416,6 @@ export default class MainLevel {
     }
 
     create() {
-        console.log(this.game)
         this.reset()
         this.game.stage.backgroundColor = "#000000";
         this.fireSpeed = 0;
@@ -496,7 +491,6 @@ export default class MainLevel {
 
 
         this.resetPowerUp = function() {
-            console.log('reset is called');
             this.game.powerUpTime = this.game.time.now + this.game.rnd.integerInRange(6000,30000);
             this.game.powerUpOnScreen = false;
         };
@@ -506,7 +500,6 @@ export default class MainLevel {
         //this.starfield.tilePosition.y += 1;
         //this.starfield2.tilePosition.y += 2;
         if(this.game.time.now > this.game.powerUpTime && !this.game.powerUpOnScreen){
-            console.log('powerup on screen')
             this.game.powerUpOnScreen = true;
             let spawnPositionpwer = this.game.rnd.integerInRange(20,this.game.width -20);
             let sprite = this.powerUps.create(spawnPositionpwer, 0, 'powerup');

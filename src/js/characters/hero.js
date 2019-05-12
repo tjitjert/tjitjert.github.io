@@ -26,6 +26,7 @@ export default class Hero extends Phaser.Sprite {
         this.hasShield = false;
         this.hasPowerUp = false;
         this.powerUpTime;
+        this.bulletToggle = true;
         
         game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
@@ -109,6 +110,7 @@ export default class Hero extends Phaser.Sprite {
         }
     }
     fireBullet(){
+        let fireTimeOut = this.hasPowerUp ? 200 : 400;
         //  To avoid them being allowed to fire too fast we set a time limit
         if (this.game.time.now > this.bulletTime)
         {
@@ -119,14 +121,23 @@ export default class Hero extends Phaser.Sprite {
             {
                 //  And fire it
                 this.game._sfx.shot.play();
-                bullet.reset(this.x, this.y + 8);
+                if(this.hasPowerUp){
+                    if(this.bulletToggle){
+                        bullet.reset(this.x +18, this.y + 8);
+                    } else {
+                        bullet.reset(this.x -18, this.y + 8);
+                    }
+                        this.bulletToggle = !this.bulletToggle;
+                } else{
+                    bullet.reset(this.x, this.y + 8);
+                }
+
+
+                
                 bullet.body.velocity.y = -400;
                 bullet.fromPlayer = this.settings.player;
-                if(this.hasPowerUp) {
-                    this.bulletTime = this.game.time.now + 200;
-                } else {
-                    this.bulletTime = this.game.time.now + 400;
-                }
+                this.bulletTime = this.game.time.now + fireTimeOut;
+
                 
             }
         }
