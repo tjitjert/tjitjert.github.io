@@ -270,6 +270,13 @@ function collisionHandler (bullet, alien) {
     }
 }
 
+function poweruphitsplayer (player, pwrup){
+    pwrup.kill();
+    this.resetPowerUp();
+    player.hasPowerUp = true;
+    player.powerUpTime = this.game.time.now + 10000
+}
+
 function enemyHitsPlayer (player,bullet) {
 
     bullet.kill();
@@ -413,9 +420,12 @@ export default class MainLevel {
     }
 
     create() {
+        console.log(this.game)
         this.reset()
         this.game.stage.backgroundColor = "#000000";
         this.fireSpeed = 0;
+        this.game.powerUpTime = this.game.time.now + this.game.rnd.integerInRange(6000,30000);
+        this.game.powerUpOnScreen = false;
         
     
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -463,7 +473,10 @@ export default class MainLevel {
             }
             
         });
-        //this.game._sfx.boden.play();
+        if(!this.game._multiplayerMode){
+            this.game._sfx.boden.play();
+        }
+        
 
         // The enemy's bullets
         this.enemyBullets = this.game.add.group();
@@ -478,11 +491,48 @@ export default class MainLevel {
         this.enemyWalls = this.game.add.group();
         this.enemyWalls.visible = false;
         createBlindWalls(this);
+
+        this.powerUps = this.game.add.group();
+
+
+        this.resetPowerUp = function() {
+            console.log('reset is called');
+            this.game.powerUpTime = this.game.time.now + this.game.rnd.integerInRange(6000,30000);
+            this.game.powerUpOnScreen = false;
+        };
     }
 
     update () {
         //this.starfield.tilePosition.y += 1;
         //this.starfield2.tilePosition.y += 2;
+        if(this.game.time.now > this.game.powerUpTime && !this.game.powerUpOnScreen){
+            console.log('powerup on screen')
+            this.game.powerUpOnScreen = true;
+            let spawnPositionpwer = this.game.rnd.integerInRange(20,this.game.width -20);
+            let sprite = this.powerUps.create(spawnPositionpwer, 0, 'powerup');
+            sprite.scale.setTo(0.07, 0.07);   
+            
+            // physic properties
+            this.game.physics.enable(sprite);
+            sprite.body.allowGravity = false;
+
+            sprite.checkWorldBounds = true;
+            sprite.events.onOutOfBounds.add(function(pwr){
+                pwr.kill();
+                this.resetPowerUp();
+            }, this);
+
+
+            // sprite.body.collideWorldBounds = true;
+
+            // //  By default the Signal is empty, so we create it here:
+            // sprite.body.onWorldBounds = new Phaser.Signal();
+            // sprite.body.onWorldBounds.add(function(e,k ,j){
+            //     console.log(e, k, j);
+            // }, this);
+            this.game.physics.arcade.moveToXY(sprite,spawnPositionpwer ,900, 100);
+            
+        }
 
         if (this.game.time.now > this.firingTimer)
         {
@@ -491,6 +541,8 @@ export default class MainLevel {
         this.game.physics.arcade.overlap(this.aliens, this.enemyWalls, enemyHitsWall, null, this);
         this.game.physics.arcade.overlap(this.player.bullets, this.aliens, collisionHandler, null, this);
         this.game.physics.arcade.overlap(this.enemyBullets, this.player, enemyHitsPlayer, null, this);
+        this.game.physics.arcade.overlap(this.powerUps, this.player, poweruphitsplayer, null, this);
+
 
         if(this.player.reviveAble && this.player.revivePenalty < this.game.time.now){
             this.player.revive();

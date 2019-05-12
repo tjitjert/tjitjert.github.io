@@ -24,6 +24,8 @@ export default class Hero extends Phaser.Sprite {
         this.scale.setTo(0.30, 0.30);
         this.anchor.setTo(0.5, 0.5);
         this.hasShield = false;
+        this.hasPowerUp = false;
+        this.powerUpTime;
         
         game.physics.enable(this, Phaser.Physics.ARCADE);
         this.body.collideWorldBounds = true;
@@ -48,6 +50,9 @@ export default class Hero extends Phaser.Sprite {
         this.createLives(settings.lives);
     }
     update(){
+        if(this.powerUpTime < this.game.time.now){
+            this.hasPowerUp = false; 
+        }
         if (this.alive)
         {
             //  Reset the player, then check for movement keys
@@ -117,7 +122,12 @@ export default class Hero extends Phaser.Sprite {
                 bullet.reset(this.x, this.y + 8);
                 bullet.body.velocity.y = -400;
                 bullet.fromPlayer = this.settings.player;
-                this.bulletTime = this.game.time.now + 400;
+                if(this.hasPowerUp) {
+                    this.bulletTime = this.game.time.now + 200;
+                } else {
+                    this.bulletTime = this.game.time.now + 400;
+                }
+                
             }
         }
     }

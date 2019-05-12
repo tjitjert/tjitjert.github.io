@@ -68,6 +68,7 @@ let preloader = {
   preload: function () {
     game.load.image('ship1', 'assets/img/Jet-top.svg');
     game.load.image('ship2', 'assets/img/Jet2-top.svg');
+    game.load.image('powerup', 'assets/img/powerup.png');
     game.load.audio('sfx:shot', 'assets/audio/shot.wav');
     game.load.audio('sfx:impact', 'assets/audio/impact.wav');
     game.load.audio('sfx:boden', 'assets/audio/Superhero_pack/Superhero_violin.ogg');
@@ -105,6 +106,7 @@ const startCountDown = () => {
 const startGame = () => {
   game._connection = connection;
   game._nickname = nickname;
+  game._multiplayerMode = multiplayerMode;
   if (gameStatus.status !== 'waiting') {
     console.log('User not ready!');
     return;
