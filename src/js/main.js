@@ -62,7 +62,7 @@ document.addEventListener('keyup', keyHandle);
 
 // Init game
 let score = new ScoreController({name: 'aTestGame'});
-let game = new Phaser.Game(1152, 648, Phaser.AUTO, 'capManGalaxy');
+let game = new Phaser.Game(1280, 720, Phaser.AUTO, 'capManGalaxy');
 
 let preloader = {
   preload: function () {
@@ -136,8 +136,12 @@ const gameOver = (player) => {
 };
 
 const resetGame = () => {
- 
-  window.location = pageURL;
+  if(multiplayerMode){
+    window.location = pageURL;
+  } else {
+    window.location = pageURL + '/?multiplayerMode=false';
+  }
+  
 };
 
 const updateName = (data) => {

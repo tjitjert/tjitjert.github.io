@@ -497,7 +497,7 @@ export default class MainLevel {
     }
 
     update () {
-        //this.starfield.tilePosition.y += 1;
+        this.starfield.tilePosition.y += 1;
         //this.starfield2.tilePosition.y += 2;
         if(this.game.time.now > this.game.powerUpTime && !this.game.powerUpOnScreen){
             this.game.powerUpOnScreen = true;
