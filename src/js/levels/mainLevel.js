@@ -26,7 +26,7 @@ function createAliens (context, invaderType) {
     context.fireSpeed++;
     let xMultiply = 68, yMultiply =70;
     let scale = 0.22;
-    let tweenX = 550;
+    let tweenX = 700;
     bonusScore = 350;
 
     setTimeout(e=>bonusScore = bonusScore -100, 30000)
@@ -37,21 +37,21 @@ function createAliens (context, invaderType) {
         xMultiply = 78; 
         //yMultiply =90;
         scale = 0.12;
-        tweenX = 400
+        tweenX = 550
     }
 
     if(invaderType === 2){
         xMultiply = 78; 
         //yMultiply =90;
         scale = 0.12;
-        tweenX = 500
+        tweenX = 650
     }
 
     if(invaderType === 3){
         xMultiply = 85; 
         //yMultiply =90;
         scale = 0.22;
-        tweenX = 500
+        tweenX = 650
     }
 
     for (var y = 0; y < 4; y++)
@@ -134,7 +134,7 @@ function setupInvader (invader) {
 function createBlindWalls(context){
 
     for (var i = 0; i < 75; i++) { 
-        let sprite = context.enemyWalls.create(20*i, 865, 'invisible-wall');    
+        let sprite = context.enemyWalls.create(20*i, 690, 'invisible-wall');    
         // physic properties
         context.game.physics.enable(sprite);
         sprite.body.immovable = true;
@@ -484,7 +484,7 @@ export default class MainLevel {
         this.enemyBullets.setAll('checkWorldBounds', true);
 
         this.enemyWalls = this.game.add.group();
-        this.enemyWalls.visible = false;
+        this.enemyWalls.visible = true;
         createBlindWalls(this);
 
         this.powerUps = this.game.add.group();
