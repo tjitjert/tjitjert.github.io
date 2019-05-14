@@ -484,7 +484,7 @@ export default class MainLevel {
         this.enemyBullets.setAll('checkWorldBounds', true);
 
         this.enemyWalls = this.game.add.group();
-        this.enemyWalls.visible = true;
+        this.enemyWalls.visible = false;
         createBlindWalls(this);
 
         this.powerUps = this.game.add.group();
