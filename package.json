@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "capmanhighscore": "0.0.1",
-    "capmaningamemenu": "0.0.1"
+    "capmaningamemenu": "0.0.2",
+    "phaser": "^3.16.2"
   }
 }
