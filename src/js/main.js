@@ -17,7 +17,7 @@ function keyHandle(event) {
 document.addEventListener('keydown',keyHandle);
 document.addEventListener('keyup',keyHandle);
 
-let game = new Phaser.Game(1280, 1024, Phaser.AUTO, 'capManGalaxy');
+let game = new Phaser.Game(screen.width, screen.height, Phaser.AUTO, 'capManGalaxy');
 
 var score = new ScoreController({name: 'aTestGame'});
 
