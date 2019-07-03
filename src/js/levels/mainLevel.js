@@ -398,9 +398,9 @@ export default class MainLevel {
                 y: 900
             },
             keys: this.game.input.keyboard.addKeys({
-                left: Phaser.KeyCode.LEFT,
-                right: Phaser.KeyCode.RIGHT,
-                fire: Phaser.KeyCode.CONTROL
+                left: Phaser.KeyCode.A,
+                right: Phaser.KeyCode.D,
+                fire: Phaser.KeyCode.U
             })
         });
         let addedScore = this.levelConfig.playerScore ||0;
@@ -418,9 +418,9 @@ export default class MainLevel {
                     y: 900
                 },
                 keys: this.game.input.keyboard.addKeys({
-                    left: Phaser.KeyCode.D,
-                    right: Phaser.KeyCode.G,
-                    fire: Phaser.KeyCode.A
+                    left: Phaser.KeyCode.LEFT,
+                    right: Phaser.KeyCode.RIGHT,
+                    fire: Phaser.KeyCode.NUMPAD_7
                 })
             });
             let addedScorepTwo = this.levelConfig.playerTwoScore || 0
