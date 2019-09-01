@@ -30,8 +30,8 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "capmanhighscore": "0.0.2",
-    "capmaningamemenu": "0.0.3",
+    "capmanhighscore": "0.0.3",
+    "capmaningamemenu": "0.0.4",
     "phaser": "^3.16.2"
   }
 }

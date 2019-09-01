@@ -386,7 +386,40 @@ export default class MainLevel {
         //  The scrolling starfield background
         this.starfield = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield');
         this.starfield2 = this.game.add.tileSprite(0, 0, 1280, 1024, 'starfield2');
-        setDummyInputs(this);
+        var keyst = JSON.parse(localStorage.getItem("capManKeys"));
+        if(keyst === null) {
+            keyst = {
+                playerOne: {
+                    up: Phaser.KeyCode.W,
+                    down: Phaser.KeyCode.S,
+                    left: Phaser.KeyCode.A,
+                    right: Phaser.KeyCode.D,
+                    green: Phaser.KeyCode.J,
+                    black: Phaser.KeyCode.U,
+                    white: '',
+                    blueBelowWhite: '',
+                    topRightBlue: '',
+                    buttomRightBlue: ''
+                },
+                playerTwo: {
+                    up: '',
+                    down: '',
+                    left: Phaser.KeyCode.LEFT,
+                    right: Phaser.KeyCode.RIGHT,
+                    green: '',
+                    black: Phaser.KeyCode.NUMPAD_7,
+                    white: '',
+                    blueBelowWhite: '',
+                    topRightBlue: '',
+                    buttomRightBlue: ''
+                },
+                pinBallLeft: '',
+                pinBallRight: '',
+                OnePlayerSelection: '',
+                TwoPlayerSelection: ''
+            }
+        }
+
         //  The hero!
         this.player =  new Hero(this.game, {
             ship: 'ship1',
@@ -398,9 +431,9 @@ export default class MainLevel {
                 y: 900
             },
             keys: this.game.input.keyboard.addKeys({
-                left: Phaser.KeyCode.A,
-                right: Phaser.KeyCode.D,
-                fire: Phaser.KeyCode.U
+                left: keyst.playerOne.left,
+                right: keyst.playerOne.right,
+                fire: keyst.playerOne.black
             })
         });
         let addedScore = this.levelConfig.playerScore ||0;
@@ -418,9 +451,9 @@ export default class MainLevel {
                     y: 900
                 },
                 keys: this.game.input.keyboard.addKeys({
-                    left: Phaser.KeyCode.LEFT,
-                    right: Phaser.KeyCode.RIGHT,
-                    fire: Phaser.KeyCode.NUMPAD_7
+                    left: keyst.playerTwo.left,
+                    right: keyst.playerTwo.right,
+                    fire: keyst.playerTwo.black
                 })
             });
             let addedScorepTwo = this.levelConfig.playerTwoScore || 0
