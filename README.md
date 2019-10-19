@@ -1,4 +1,9 @@
-# capManGalaxy
-The invaders game for Capman
+# capManGalaxyInfinity
+Infinity mode capman galaxy
 
-find the game running here: https://capacade.github.io/capManGalaxy/
+
+to start developing `npm run start:dev`
+
+to deploy new version on github pages: `npm run build:docs` push changes
+
+

@@ -1,37 +1,39 @@
 {
-  "name": "capmangalaxy",
+  "name": "capmangalaxyinfinity",
   "version": "1.0.0",
-  "description": "this is a capman arcade game where capman has to crash bugs to save its software in a a invaders world",
+  "description": "capman galaxy infinity mode",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.config.js",
-    "start:dev": "webpack-dev-server"
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capAcade/capManGalaxy.git"
+    "url": "git+https://github.com/capAcade/capManGalaxyInfinity.git"
   },
-  "keywords": [
-    "capman",
-    "html5",
-    "game"
-  ],
   "author": "Sven van Straalen",
-  "license": "MIT",
+  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/capAcade/capManGalaxy/issues"
+    "url": "https://github.com/capAcade/capManGalaxyInfinity/issues"
   },
-  "homepage": "https://github.com/capAcade/capManGalaxy#readme",
+  "homepage": "https://github.com/capAcade/capManGalaxyInfinity#readme",
   "devDependencies": {
-    "copy-webpack-plugin": "^4.5.1",
-    "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.7",
-    "webpack-dev-server": "^3.1.4"
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "eslint": "^6.1.0",
+    "file-loader": "^4.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.19.4",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "capmanhighscore": "0.0.3",
-    "capmaningamemenu": "0.0.4",
-    "phaser": "^3.16.2"
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "nodemon-webpack-plugin": "^4.1.1",
+    "phaser": "^3.18.1"
   }
 }
