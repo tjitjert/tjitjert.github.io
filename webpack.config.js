@@ -1,25 +1,35 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './src/js/main.js',
-  mode:'development',
+  mode: 'development',
+  entry: './src/fe/main.js',
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'docs')
+    path: path.resolve(__dirname, 'docs'),
+    filename: 'main.js'
   },
   resolve: {
     alias: {
-      heros: path.resolve(__dirname, 'src/heros/')
+      Characters: path.resolve(__dirname, 'src/fe/characters/'),
+      Fx: path.resolve(__dirname, 'src/fe/fx/'),
+      Assets: path.resolve(__dirname, 'src/fe/assets/'),
+      Utils: path.resolve(__dirname, 'src/fe/utils/')
     }
   },
-  plugins: [
-    new CopyWebpackPlugin([
-        {from: './src/html/**/*', to:'', flatten: true},
-        {from: './vendor/**/*', to:'', flatten: true},
-        {from: './assets/img/**/*', to: ''},
-        {from: './assets/audio/**/*', to: ''},
-        {from: './assets/levels/**/*', to: ''}
-    ])
-  ]
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg|xml|ogg|wav)$/i,
+        use: "file-loader"
+      }
+    ]
+  },
+  plugins: [new HtmlWebpackPlugin()]
 };
