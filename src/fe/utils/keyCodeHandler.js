@@ -30,7 +30,7 @@ if(keys === null) {
             buttomRightBlue: Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX
         },
         pinBallLeft: Phaser.Input.Keyboard.KeyCodes.Z,
-        pinBallRight: Phaser.Input.Keyboard.KeyCodes.NUMPAD_THREE,
+        pinBallRight: Phaser.Input.Keyboard.KeyCodes.THREE,
         OnePlayerSelection: Phaser.Input.Keyboard.KeyCodes.N,
         TwoPlayerSelection: Phaser.Input.Keyboard.KeyCodes.M
     }

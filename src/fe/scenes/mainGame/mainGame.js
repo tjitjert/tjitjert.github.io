@@ -62,6 +62,10 @@ export default class MainGame extends Phaser.Scene {
         this.currentWave = 0;
         
         this.physics.world.setBoundsCollision(true, true, true, true);
+        this.panicButtons = {
+            pinBallLeft: this.input.keyboard.addKey(keys.pinBallLeft),
+            pinBallRight: this.input.keyboard.addKey(keys.pinBallRight),
+        };
 
         this.anims.create({
             key: 'explode',
@@ -114,6 +118,9 @@ export default class MainGame extends Phaser.Scene {
         this.hud.create(this.gamerData); 
     }
     update () {
+        if(this.panicButtons.pinBallLeft.isDown && this.panicButtons.pinBallRight.isDown) {
+            window.history.back();
+        }
         this.cleanEnemyBullets();
         this.heroGroup.getChildren()[0].update();
         this.enemyGroup.getChildren().forEach(element => {

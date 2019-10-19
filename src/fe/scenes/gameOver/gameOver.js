@@ -25,7 +25,8 @@ export default class GameOver extends Phaser.Scene {
     }
     update () {
         if (this.key.isDown) {
-            this.scene.start('enterName', {});
+            window.history.back();
+            //this.scene.start('enterName', {});
         }
     }
 }
