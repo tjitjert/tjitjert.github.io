@@ -3,7 +3,7 @@ import Enemy from 'Characters/enemy';
 export default class CollisionHandlers {
     constructor(scene) {
         this.scene = scene;
-        scene.physics.add.overlap(scene.enemyGroup, scene.hiddenWall, this.gameOver, null, this);
+        scene.physics.add.collider(scene.enemyGroup, scene.hiddenWall, this.gameOver, null, this);
         scene.physics.add.overlap(scene.enemyBullets, scene.heroGroup, this.enemyBulletHitPlayer, null, this);
         scene.physics.add.overlap(scene.heroGroup.getChildren()[0].bullets, scene.enemyGroup, this.bulletHitEnemy, null, this);
 
@@ -12,14 +12,22 @@ export default class CollisionHandlers {
                 this.enemyHitWorldBounds()
             }
         });
+        this.isGameOver = false;
     }
     gameOver () {
-        //have to stop both because dont know which one is playing
-        this.scene.sfx.heroSongIntro.stop();
-        this.scene.sfx.heroSongLoop.stop();
-        this.scene.scene.start('gameOver', {
-            gamerData: this.scene.gamerData
-        });
+        if(!this.isGameOver) {
+            this.isGameOver = true
+            this.scene.scene.stop();
+                    //have to stop both because dont know which one is playing
+            this.scene.sfx.heroSongIntro.stop();
+            this.scene.sfx.menuSong.stop();
+            this.scene.sfx.heroSongLoop.stop();
+    
+            this.scene.scene.start('gameOver', {
+                gamerData: this.scene.gamerData
+            });
+
+        }
     }
     bulletHitEnemy(bullet, enemy){
         if(bullet.active && enemy.active){

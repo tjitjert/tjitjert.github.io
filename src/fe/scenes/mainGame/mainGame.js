@@ -23,7 +23,7 @@ class HiddenWall extends Phaser.GameObjects.Sprite {
         super(scene, positionX, positionY, 'hiddenWall');
         this.setSize(width, height,true);
 
-        this.visible = true;
+        this.visible = false;
         scene.physics.world.enable(this);
         scene.add.existing(this);
     }

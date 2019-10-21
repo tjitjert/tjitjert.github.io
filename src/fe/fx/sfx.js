@@ -3,6 +3,7 @@ import heroSongIntro from 'Assets/audio/themeSongs/Superhero_violin.ogg'
 import heroSongLoop from 'Assets/audio/themeSongs/Superhero_violin_no_intro.ogg'
 import shot from 'Assets/audio/sfx/shot.wav'
 import impact from 'Assets/audio/sfx/impact.wav'
+import menuSong from 'Assets/audio/themeSongs/spacetheme.ogg'
 
 export default class SFX {
     constructor(scene) {
@@ -14,6 +15,7 @@ export default class SFX {
         this.scene.load.audio('heroSongLoop', heroSongLoop);
         this.scene.load.audio('shot', shot);
         this.scene.load.audio('impact', impact);
+        this.scene.load.audio('menuSong', menuSong);
 
     }
     create () {
@@ -37,6 +39,7 @@ export default class SFX {
         };
         this.heroSongIntro = this.scene.sound.add('heroSongWithIntro', themeSongConfig);
         this.heroSongLoop = this.scene.sound.add('heroSongLoop', themeSongConfigLoop);
+        this.menuSong = this.scene.sound.add('menuSong', themeSongConfigLoop);
 
         this.shot = this.scene.sound.add('shot', themeSongConfig);
         this.impact = this.scene.sound.add('impact', themeSongConfig);
