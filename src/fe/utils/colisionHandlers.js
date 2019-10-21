@@ -54,6 +54,7 @@ export default class CollisionHandlers {
             } else{
                 this.scene.enemyBullets.killAndHide(bullet);
                 this.scene.doExplosion(player);
+                this.scene.heroGroup.killAndHide(this.scene.heroGroup.getChildren()[0]);
                 this.gameOver();
             }
         }
