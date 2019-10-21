@@ -16,7 +16,7 @@ export default class Hero extends Phaser.GameObjects.Sprite {
         this.body.setCollideWorldBounds(true);
         this.bullets = scene.physics.add.group({
             defaultKey: 'heroDefaultBullet',
-            maxSize: 10
+            maxSize: 40
         });
         this.fireTimeStamp = 0;
     }
@@ -52,7 +52,7 @@ export default class Hero extends Phaser.GameObjects.Sprite {
             this.scene.sfx.shot.play();
             bullet.setActive(true);
             bullet.setVisible(true);
-            bullet.body.velocity.y = -200;
+            bullet.body.velocity.y = -600;
         }
     }
 }

@@ -17,16 +17,20 @@ export default class CollisionHandlers {
     gameOver () {
         if(!this.isGameOver) {
             this.isGameOver = true
-            this.scene.scene.stop();
                     //have to stop both because dont know which one is playing
             this.scene.sfx.heroSongIntro.stop();
             this.scene.sfx.menuSong.stop();
             this.scene.sfx.heroSongLoop.stop();
-    
-            this.scene.scene.start('gameOver', {
-                gamerData: this.scene.gamerData
-            });
 
+            let text = this.scene.add.text(window.innerWidth/2, window.innerHeight/2, `You are DEAD!`, { fontFamily: '"Roboto Condensed"', fontSize: '40px' });
+            text.setOrigin(0.5);
+            setTimeout(()=>{
+                console.log('test')
+                text.destroy();
+                this.scene.scene.start('gameOver', {
+                    gamerData: this.scene.gamerData
+                });
+            },3000)
         }
     }
     bulletHitEnemy(bullet, enemy){
@@ -48,6 +52,8 @@ export default class CollisionHandlers {
                 this.scene.enemyBullets.killAndHide(bullet);
                 this.scene.doExplosion(player);
             } else{
+                this.scene.enemyBullets.killAndHide(bullet);
+                this.scene.doExplosion(player);
                 this.gameOver();
             }
         }

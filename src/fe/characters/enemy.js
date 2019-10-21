@@ -26,7 +26,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
             } else{
                 bullet.setActive(true);
                 bullet.setVisible(true);
-                bullet.body.velocity.y = 200;
+                bullet.body.velocity.y = 300;
             }
 
         }
