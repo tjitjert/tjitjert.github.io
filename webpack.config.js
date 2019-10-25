@@ -31,5 +31,9 @@ module.exports = {
       }
     ]
   },
-  plugins: [new HtmlWebpackPlugin()]
+  plugins: [new HtmlWebpackPlugin({ 
+    title: "capmanGalaxy",
+    template: 'src/index.html'
+  }
+  )]
 };
