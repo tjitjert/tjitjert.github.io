@@ -22,7 +22,7 @@ export default class GameOver extends Phaser.Scene {
         this.bg = this.add.image(window.innerWidth/2, window.innerHeight/2, 'introBG');
         this.bg.setDisplaySize(window.innerWidth, window.innerHeight);
 
-        let text = this.add.text(window.innerWidth/2, window.innerHeight/2, `Your Score: ${this.gamerData.score}\n hit black to reset`, { fontFamily: '"Roboto Condensed"', fontSize: '40px' });
+        let text = this.add.text(window.innerWidth/2, window.innerHeight/2, `P1 Your Score: ${this.gamerData.p1.score}\n P2 Your Score: ${this.gamerData.p2.score}\n hit black to reset`, { fontFamily: '"Roboto Condensed"', fontSize: '40px' });
         text.setOrigin(0.5);
         this.key = this.input.keyboard.addKey(keys.playerOne.black);
         this.sfx.menuSong.play();
@@ -30,8 +30,7 @@ export default class GameOver extends Phaser.Scene {
     update () {
         if (this.key.isDown) {
             this.sfx.menuSong.stop();
-            //window.history.back();
-            this.scene.start('enterName', {});
+            window.history.back();
         }
     }
 }

@@ -5,7 +5,8 @@ export default class Hero extends Phaser.GameObjects.Sprite {
         super(scene, positionY, positionX, fixture);
         scene.physics.world.enable(this);
         scene.add.existing(this);
-        this.lives = 3
+        this.lives = 3;
+        this.id = config.id;
         this.config = config
         this.scale = 0.3
         this.keys = {
@@ -34,6 +35,7 @@ export default class Hero extends Phaser.GameObjects.Sprite {
         this.body.velocity.setTo(0, 0);
     
         if (this.keys.left.isDown) {
+            console.log('leeeeeeft');
             this.body.velocity.x = -200;
         }
         else if (this.keys.right.isDown) {
@@ -47,7 +49,12 @@ export default class Hero extends Phaser.GameObjects.Sprite {
         }
     }
     shoot(pointer) {
-        var bullet = this.bullets.get(pointer.x, pointer.y);
+
+        //only create bullet when player is living
+        if(this.visible){
+            var bullet = this.bullets.get(pointer.x, pointer.y);
+            bullet.playerID = this.id;
+        }  
         if (bullet) {
             this.scene.sfx.shot.play();
             bullet.setActive(true);

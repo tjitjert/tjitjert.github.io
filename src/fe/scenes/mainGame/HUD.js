@@ -9,13 +9,23 @@ export default class Hud {
 
     }
     create (gamerData) {
-         this.livesText = this.scene.add.text(0, 0, 'Lives', { fontFamily: '"Roboto Condensed"' });
-        this.scene.add.text(screen.width /2, 0, `Player: ${gamerData.username}`, { fontFamily: '"Roboto Condensed"' });
-        this.scoreText = this.scene.add.text(screen.width -200, 0, `Score: ${gamerData.score}`, { fontFamily: '"Roboto Condensed"' });
+        let sceenWith = screen.width /4;
+
+        this.livesTextp1 = this.scene.add.text(0, 0, 'Lives P1', { fontFamily: '"Roboto Condensed"' });
+        this.scoreTextp1 = this.scene.add.text(sceenWith, 0, `Score P1: ${gamerData.p1.score}`, { fontFamily: '"Roboto Condensed"' });
+
+        if(gamerData.p2){
+            this.livesTextp2 = this.scene.add.text(sceenWith * 2 , 0, 'Lives P2', { fontFamily: '"Roboto Condensed"' });
+            this.scoreTextp2 = this.scene.add.text(sceenWith * 3, 0, `Score P2: ${gamerData.p2.score}`, { fontFamily: '"Roboto Condensed"' });
+        }
     }
     update (gamerData){
-        this.scoreText.setText(`Score: ${gamerData.score}`);
-        this.livesText.setText(`Lives: ${gamerData.lives}`)
+        this.livesTextp1.setText(`Score P1: ${gamerData.p1.score}`);
+        this.scoreTextp1.setText(`Lives P1: ${gamerData.p1.lives}`);
+        if(gamerData.p2){
+            this.livesTextp2.setText(`Score P2: ${gamerData.p2.score}`);
+            this.scoreTextp2.setText(`Lives P2: ${gamerData.p2.lives}`);
+        }
     }
 
 }
