@@ -5,10 +5,7 @@ export default class CollisionHandlers {
         this.scene = scene;
         scene.physics.add.collider(scene.enemyGroup, scene.hiddenWall, this.gameOver, null, this);
         scene.physics.add.overlap(scene.enemyBullets, scene.heroGroup, this.enemyBulletHitPlayer, null, this);
-
-        scene.heroGroup.getChildren().forEach( (player)=>{
-            scene.physics.add.overlap(player.bullets, scene.enemyGroup, this.bulletHitEnemy, null, this);
-        });
+        scene.physics.add.overlap(scene.heroGroup.getChildren()[0].bullets, scene.enemyGroup, this.bulletHitEnemy, null, this);
 
         scene.physics.world.on('worldbounds', (element) => {
             if(element.gameObject instanceof Enemy && element.gameObject.active){
@@ -16,9 +13,6 @@ export default class CollisionHandlers {
             }
         });
         this.isGameOver = false;
-    }
-    getAllLives (gamerData) {
-        return gamerData.p1.lives + gamerData.p2.lives;
     }
     gameOver () {
         if(!this.isGameOver) {
@@ -41,32 +35,26 @@ export default class CollisionHandlers {
     }
     bulletHitEnemy(bullet, enemy){
         if(bullet.active && enemy.active){
-            this.scene.gamerData[bullet.playerID].score = this.scene.gamerData[bullet.playerID].score + this.scene.gameConfig.waves[this.scene.currentWave].killScore;
+            this.scene.gamerData.score = this.scene.gamerData.score + this.scene.gameConfig.waves[this.scene.currentWave].killScore;
             this.scene.doExplosion(enemy);
             this.scene.enemyGroup.killAndHide(enemy);
-
-            this.scene.heroGroup.getChildren().forEach((player)=>{
-                if(player.id === bullet.playerID) {
-                    player.bullets.killAndHide(bullet)
-                }
-            });
+            this.scene.heroGroup.getChildren()[0].bullets.killAndHide(bullet)
         }
     }
     enemyBulletHitPlayer(bullet, player) {
         if(bullet.active && player.active){
-            this.scene.cameras.cameras[0].shake(200, 0.02, true)
-            
-            this.scene.gamerData[player.id].lives = this.scene.gamerData[player.id].lives - 1;
-            this.scene.enemyBullets.killAndHide(bullet);
-            this.scene.doExplosion(player);
 
-            //kill player when he has no lives
-            console.log(player.id);
-            if(this.scene.gamerData[player.id].lives === 0){
-                this.scene.heroGroup.killAndHide(player);
-            }
-            // if both players dont have lives end the game
-            if(this.getAllLives(this.scene.gamerData) <= 0) {
+            this.scene.cameras.cameras[0].shake(200, 0.02, true)
+
+            if(this.scene.gamerData.lives > 0) {
+                
+                this.scene.gamerData.lives = this.scene.gamerData.lives - 1;
+                this.scene.enemyBullets.killAndHide(bullet);
+                this.scene.doExplosion(player);
+            } else{
+                this.scene.enemyBullets.killAndHide(bullet);
+                this.scene.doExplosion(player);
+                this.scene.heroGroup.killAndHide(this.scene.heroGroup.getChildren()[0]);
                 this.gameOver();
             }
         }

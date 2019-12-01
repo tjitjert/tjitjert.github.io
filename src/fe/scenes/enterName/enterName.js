@@ -31,12 +31,8 @@ export default class EnterName extends Phaser.Scene {
             this.sfx.menuSong.stop();
             this.scene.start('mainGame', {
                 gamerData: {
-                    p1: {
-                        lives: 3
-                    },
-                    p2: {
-                        lives: 3
-                    }
+                    username: 'hackerman',
+                    lives: 3
                 },
                 gameConfig :this.gameConfig
             });

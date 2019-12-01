@@ -23,7 +23,7 @@ if(keys === null) {
             left: Phaser.Input.Keyboard.KeyCodes.LEFT,
             right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
             green: Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR,
-            black: Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT,
+            black: Phaser.Input.Keyboard.KeyCodes.X,
             white: Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN,
             blueBelowWhite: Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE,
             topRightBlue: Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE,

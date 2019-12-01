@@ -123,7 +123,7 @@
         "shootSpeed":600,
         "spawnOrder":"111111111111#100011110001#100011110001#111111111111#",
         "speed":300,
-        "decentSpeed":40,
+        "decentSpeed":30,
         "shootType": "HOMING",
         "scale":0.3
       },
@@ -141,7 +141,7 @@
         "shootSpeed":800,
         "spawnOrder":"1111111111111#0111111111110#0001111111000#0000011100000#",
         "speed":325,
-        "decentSpeed":40,
+        "decentSpeed":30,
         "shootType": "HOMING",
         "scale":0.3
       },
@@ -159,7 +159,7 @@
         "shootSpeed":800,
         "spawnOrder":"111111111111#111111111111#111111111111#111111111111#",
         "speed":350,
-        "decentSpeed":40,
+        "decentSpeed":30,
         "shootType": "HOMING",
         "scale":0.3
       },
@@ -173,7 +173,7 @@
           "x":50,
           "y":100
         },
-        "killScore":45,
+        "killScore":30,
         "shootSpeed":750,
         "spawnOrder":"111111111111#100011110001#100011110001#111111111111#",
         "speed":400,
@@ -195,7 +195,7 @@
         "shootSpeed":750,
         "spawnOrder":"1111111111111#0111111111110#0001111111000#0000011100000#",
         "speed":450,
-        "decentSpeed":45,
+        "decentSpeed":20,
         "shootType": "HOMING",
         "scale":0.2
       },
@@ -213,7 +213,7 @@
         "shootSpeed":750,
         "spawnOrder":"111111111111#111111111111#111111111111#111111111111#",
         "speed":500,
-        "decentSpeed":45,
+        "decentSpeed":20,
         "shootType": "HOMING",
         "scale":0.2
       },
@@ -231,7 +231,7 @@
         "shootSpeed":700,
         "spawnOrder":"10000000000000000000000#01100000000000000000110#00111111000000001111100#00001111111111111110000#00000001111111110000000#",
         "speed":550,
-        "decentSpeed":45,
+        "decentSpeed":20,
         "shootType": "HOMING",
         "scale":0.2
       }

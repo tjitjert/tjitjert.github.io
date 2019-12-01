@@ -17,7 +17,6 @@ import flagEars from 'Assets/img/characters/baddies/bug2.svg';
 import muscito from 'Assets/img/characters/baddies/bug3.svg';
 import beetle from 'Assets/img/characters/baddies/bug4.svg';
 import hiddenWall from 'Assets/img/utils/invisible_wall.png';
-import secondHero from 'Assets/img/characters/heros/Jet2-top.svg'
 
 class HiddenWall extends Phaser.GameObjects.Sprite {
     constructor(scene, positionX, positionY, width, height) {
@@ -42,14 +41,13 @@ export default class MainGame extends Phaser.Scene {
     preload() {
         
         this.load.image('hero', heroIMG);
-        this.load.image('secondHero', secondHero);
-        this.load.image('heroDefaultBullet', heroBullet);
-        this.load.image('enemyDefaultBullet', enemyBullet);
-        this.load.image('eyeUfo', eyeUfo);
-        this.load.image('muscito', muscito);
-        this.load.image('beetle', beetle);
-        this.load.image('hiddenWall', hiddenWall);
-        this.load.image('flagEars', flagEars);
+        this.load.image('heroDefaultBullet', heroBullet)
+        this.load.image('enemyDefaultBullet', enemyBullet)
+        this.load.image('eyeUfo', eyeUfo)
+        this.load.image('muscito', muscito)
+        this.load.image('beetle', beetle)
+        this.load.image('hiddenWall', hiddenWall)
+        this.load.image('flagEars', flagEars)
         this.load.spritesheet('kaboom', 
             explode,
             { frameWidth: 128, frameHeight: 128 }
@@ -91,15 +89,8 @@ export default class MainGame extends Phaser.Scene {
         });
 
         let _heros = [];
-        _heros.push(new Hero(this, screen.width /4, screen.height - 100, 'hero', {
+        _heros.push(new Hero(this, screen.width /2, screen.height - 100, 'hero', {
             keys: keys.playerOne,
-            id: 'p1',
-            fireSpeed: 300
-        }));
-
-        _heros.push(new Hero(this, screen.width - screen.width /4, screen.height - 100, 'secondHero', {
-            keys: keys.playerTwo,
-            id: 'p2',
             fireSpeed: 300
         }));
         this.heroGroup = new Phaser.Physics.Arcade.Group(
@@ -117,10 +108,7 @@ export default class MainGame extends Phaser.Scene {
             this.sfx.heroSongLoop.play();
         })
 
-        this.gamerData.p1.score = this.gamerData.p1.score || 0;
-        if(this.gamerData.p2) {
-            this.gamerData.p2.score = this.gamerData.p2.score || 0;
-        }
+        this.gamerData.score = this.gamerData.score || 0; 
 
         this.hiddenWall = new HiddenWall(this, 1, window.innerHeight-30, window.innerWidth, 10);
 
@@ -134,9 +122,7 @@ export default class MainGame extends Phaser.Scene {
             window.history.back();
         }
         this.cleanEnemyBullets();
-        this.heroGroup.getChildren().forEach(element => {
-            element.update();
-        });
+        this.heroGroup.getChildren()[0].update();
         this.enemyGroup.getChildren().forEach(element => {
             element.update();
         });
