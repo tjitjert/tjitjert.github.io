@@ -91,7 +91,7 @@ export default class MainGame extends Phaser.Scene {
         let _heros = [];
         _heros.push(new Hero(this, screen.width /2, screen.height - 100, 'hero', {
             keys: keys.playerOne,
-            fireSpeed: 300
+            fireSpeed: 200
         }));
         this.heroGroup = new Phaser.Physics.Arcade.Group(
             this.physics.world,
