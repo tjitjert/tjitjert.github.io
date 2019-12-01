@@ -6,12 +6,12 @@ var keys = JSON.parse(localStorage.getItem("capManKeys"));
 if(keys === null) {
     keys = {
         playerOne: {
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-            green: Phaser.Input.Keyboard.KeyCodes.J,
-            black: Phaser.Input.Keyboard.KeyCodes.I,
+            up: Phaser.Input.Keyboard.KeyCodes.UP,
+            down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+            left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+            right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            green: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            black: Phaser.Input.Keyboard.KeyCodes.R,
             white: Phaser.Input.Keyboard.KeyCodes.U,
             blueBelowWhite: Phaser.Input.Keyboard.KeyCodes.K,
             topRightBlue: Phaser.Input.Keyboard.KeyCodes.O,

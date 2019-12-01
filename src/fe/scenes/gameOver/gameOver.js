@@ -22,7 +22,7 @@ export default class GameOver extends Phaser.Scene {
         this.bg = this.add.image(window.innerWidth/2, window.innerHeight/2, 'introBG');
         this.bg.setDisplaySize(window.innerWidth, window.innerHeight);
 
-        let text = this.add.text(window.innerWidth/2, window.innerHeight/2, `Your Score: ${this.gamerData.score}\n hit black to reset`, { fontFamily: '"Roboto Condensed"', fontSize: '40px' });
+        let text = this.add.text(window.innerWidth/2, window.innerHeight/2, `SCORE: ${this.gamerData.score}\n R = RESET`, { fontFamily: '"Arial"', fontSize: '30px', align: 'center', });
         text.setOrigin(0.5);
         this.key = this.input.keyboard.addKey(keys.playerOne.black);
         this.sfx.menuSong.play();

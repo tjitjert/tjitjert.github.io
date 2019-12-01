@@ -22,7 +22,7 @@ export default class CollisionHandlers {
             this.scene.sfx.menuSong.stop();
             this.scene.sfx.heroSongLoop.stop();
 
-            let text = this.scene.add.text(window.innerWidth/2, window.innerHeight/2, `You are DEAD!`, { fontFamily: '"Roboto Condensed"', fontSize: '40px' });
+            let text = this.scene.add.text(window.innerWidth/2, window.innerHeight/2, `GAME OVER!`, { fontFamily: '"Arial"', fontSize: '70px', align: 'center', });
             text.setOrigin(0.5);
             setTimeout(()=>{
                 console.log('test')

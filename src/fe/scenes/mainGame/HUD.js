@@ -9,9 +9,9 @@ export default class Hud {
 
     }
     create (gamerData) {
-         this.livesText = this.scene.add.text(0, 0, 'Lives', { fontFamily: '"Roboto Condensed"' });
-        this.scene.add.text(screen.width /2, 0, `Player: ${gamerData.username}`, { fontFamily: '"Roboto Condensed"' });
-        this.scoreText = this.scene.add.text(screen.width -200, 0, `Score: ${gamerData.score}`, { fontFamily: '"Roboto Condensed"' });
+         this.livesText = this.scene.add.text(0, 0, 'Lives', { fontFamily: '"Arial"', fontSize: '24px', });
+        this.scene.add.text(screen.width /2, 0, `Player: ${gamerData.username}`, { fontFamily: '"Arial"', fontSize: '24px', });
+        this.scoreText = this.scene.add.text(screen.width -200, 0, `Score: ${gamerData.score}`, { fontFamily: '"Arial"', fontSize: '24px', });
     }
     update (gamerData){
         this.scoreText.setText(`Score: ${gamerData.score}`);
