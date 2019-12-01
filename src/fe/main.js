@@ -7,8 +7,11 @@ import GaneOver from './scenes/gameOver/gameOver'
 const config = {
   type: Phaser.AUTO,
   parent: 'capman-galaxy-infinity',
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: window.innerWidth * window.devicePixelRatio,
+  height: window.innerHeight * window.devicePixelRatio,
+  scale: {
+    mode: Phaser.Scale.EXACT_FIT
+  },
   physics:{
     default: 'arcade',
     arcade: {
