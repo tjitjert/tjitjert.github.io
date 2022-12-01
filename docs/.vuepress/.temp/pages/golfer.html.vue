@@ -1,0 +1,15 @@
+<template><div><h1 id="golfer" tabindex="-1"><a class="header-anchor" href="#golfer" aria-hidden="true">#</a> Golfer</h1>
+<p>Op naar de eerste opdracht, een sportieve, soort van. Welke sport is beter voor een ex-bankier dan de ultieme witte mannen sport, Golf? Juist, niets. Ga door naar stap 1.</p>
+<h2 id="stap-1" tabindex="-1"><a class="header-anchor" href="#stap-1" aria-hidden="true">#</a> Stap 1</h2>
+<p>Laat de bruine koffer dicht. Open de twee witte kadootjes en ga vervolgens door naar stap 2.</p>
+<h2 id="stap-2" tabindex="-1"><a class="header-anchor" href="#stap-2" aria-hidden="true">#</a> Stap 2</h2>
+<p>Leg het balletje op de grond. Leg hem mogelijk op een stukje karton om de vloer te beschermen. Ga vervolgens door naar stap 2.</p>
+<h2 id="stap-3" tabindex="-1"><a class="header-anchor" href="#stap-3" aria-hidden="true">#</a> Stap 3</h2>
+<p>Leg de bruine hole op 3 meter afstand van het balletje. Gelukt? Ga door naar stap 3.</p>
+<h2 id="stap-4" tabindex="-1"><a class="header-anchor" href="#stap-4" aria-hidden="true">#</a> Stap 4</h2>
+<p>Pak de golfclub en probeer 3 keer een hole in one te scoren. Na de 3 pogingen, ga door naar stap 4.</p>
+<h2 id="stap-5" tabindex="-1"><a class="header-anchor" href="#stap-5" aria-hidden="true">#</a> Stap 5</h2>
+<p>Alle 3 de pogingen een hole in one? Gefeliciteerd. Niet gescoord? Misschien is dit niet de hobby voor jou. Ga door naar de volgende hobby: 'Sommelier'.</p>
+</div></template>
+
+
