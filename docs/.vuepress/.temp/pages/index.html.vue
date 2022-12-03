@@ -1,6 +1,52 @@
 <template><div><h1 id="gedicht" tabindex="-1"><a class="header-anchor" href="#gedicht" aria-hidden="true">#</a> Gedicht</h1>
-<h2 id="heading-2" tabindex="-1"><a class="header-anchor" href="#heading-2" aria-hidden="true">#</a> Heading 2</h2>
-<h3 id="heading-3" tabindex="-1"><a class="header-anchor" href="#heading-3" aria-hidden="true">#</a> Heading 3</h3>
+<p>Beste Ed,</p>
+<p>De sint heeft het weer gered.<br>
+En heeft erg veel zin in de komende pret.</p>
+<p>Het waren rare jaren.<br>
+Maar hij mocht eindelijk weer naar Nederland varen.</p>
+<p>Weer samen met deze groep schorriemorrie.<br>
+En dit keer zonder tante corrie.</p>
+<p>Het was voor jou een zware tijd.<br>
+Maar binnenkort ben je hier eindelijk van bevrijdt.</p>
+<p>Dit kwam door die oranje bank.<br>
+Voor jou harde werken kreeg je stank voor dank.</p>
+<p>Je kwam in een diep ravijn.<br>
+Dat was voor jou en mama niet fijn.</p>
+<p>De zoektocht naar het licht was zwaar.<br>
+Een moeilijk proces van meer dan een jaar.</p>
+<p>Maar je zocht de juiste hulp.<br>
+Daarmee kwamen de oorzaken uit hun schulp.</p>
+<p>Je ging ermee aan de slag.<br>
+Een intensief proces voor elke dag.</p>
+<p>Maar het is je gelukt.<br>
+Onder de stress van werk ga je niet meer gebukt.</p>
+<p>Je werd niet beloond voor je loyaliteit.<br>
+Dus ging je op zoek naar een nieuwe realiteit.</p>
+<p>Eentje zonder de bank.<br>
+En gevuld met een positive klank.</p>
+<p>Dit gaat voor je gevoel misschien niet zo snel.<br>
+Maar langzamerhand kom je er wel.</p>
+<p>Een mooi voorbeeld is je opleiding tot gids.<br>
+Daarmee steel je staks als jongste de blits.</p>
+<p>Of meer doorbrengen met mama in de natuur.<br>
+Dat is toch duizend keer fijner dan achter het stuur.</p>
+<p>Dan nog je innerlijke bob de bouwer.<br>
+Daarmee help je menig vriend en familie als echte doordouwer.</p>
+<p>De laatste dingen aan het huis zijn bijna verbouwd.<br>
+Daarna is het echt in geen enkele kamer meer koud.</p>
+<p>Straks heb je zeeen van tijd.<br>
+Dan ben je van werk echt bevrijd.</p>
+<p>Dus een hobby of twee kan er nog wel bij.<br>
+Maar enkel die je niets anders maken dan blij.</p>
+<p>Daarom gaan we met deze surprise op avontuur.<br>
+Dus neem plaats achter het metaforische stuur.</p>
+<p>We gaan starten met expeditie ed.<br>
+Gefocused op niets minder dan pret.</p>
+<p>Dus maak je klaar.<br>
+Want de tijd is weer daar.</p>
+<p>Gebruik deze website als je compas.<br>
+En dit werk hoeft zonder pak of das.</p>
+<p>We gaan van start, ga door naar het menu item 'Golfer'.</p>
 </div></template>
 
 

@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-8daa1a0e","path":"/","title":"Gedicht","lang":"en-US","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1669754288000,"contributors":[{"name":"Richard Hoving","email":"tjitjert@Richards-MacBook-Pro.local","commits":1}]},"filePathRelative":"index.md"}');export{e as data};
